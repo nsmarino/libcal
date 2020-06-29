@@ -1,0 +1,16 @@
+.calContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    border: 1px solid maroon;
+}
+
+.day {
+    border: 1px solid maroon;
+    width: 6rem;
+    height: 6rem;
+}
+
+.day:hover {
+    background-color: lightgray;
+}
