@@ -1,0 +1,7 @@
+post http://localhost:3000/api/events
+Content-Type: application/json
+ 
+{
+  "name": "Knitting",
+  "description": "This is a club."
+}

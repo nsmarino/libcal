@@ -5,15 +5,24 @@ import EventForm from '../components/EventForm'
 
 import data from '../sampleData'
 
-// "New Event" form templated on Zoom New Meeting form
-// Set up local mongodb url for development purposes
-// achieve CRUD
-// C - create events with minimal logic
-// R - fetch all events / fetch specific event
-// U - edit events as admin; register as patron
-// D - admin can delete
+import { getAllEvents } from '../lib/eventLib'
 
-export default function Home({ data }) {
+// ROADMAP:
+// 1. "New Event" form templated on Zoom New Meeting form
+// 2. Set up local mongodb url for development purposes
+// 3. achieve CRUD
+//      C - create events with minimal logic
+//      R - fetch all events / fetch specific event
+//      U - edit events as admin; register as patron
+//      D - admin can delete
+// 4. Add admin login and control panel
+// 5. Event scheduling logic (every 2 weeks, etc)
+// 6. Email blast integration - SendGrid?
+// 7. CSS Party and status assessment
+
+export default function Home({ data, eventData }) {
+
+  console.log(eventData)
   return (
     <div className="container">
       <Head>
@@ -27,6 +36,8 @@ export default function Home({ data }) {
       <main>
         <Calendar eventData={data.sampleData} month={data.sampleMonth} />
         <EventForm />
+
+
       </main>
     </div>
   )
@@ -34,6 +45,7 @@ export default function Home({ data }) {
 
 // This gets called on every request
 export async function getServerSideProps() {
+  const eventData = await getAllEvents()
   // Pass data to the page via props
-  return { props: { data } }
+  return { props: { data, eventData } }
 }

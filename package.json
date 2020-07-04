@@ -8,9 +8,12 @@
     "start": "next start"
   },
   "dependencies": {
+    "axios": "^0.19.2",
+    "dotenv": "^8.2.0",
     "mongoose": "^5.9.20",
     "next": "9.4.4",
     "react": "16.13.1",
     "react-dom": "16.13.1"
-  }
+  },
+  "devDependencies": {}
 }

@@ -14,7 +14,7 @@ async function dbConnect() {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
-  })
+  }, () => console.log('connected to mongoDB'))
 
   connection.isConnected = db.connections[0].readyState
 }
