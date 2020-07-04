@@ -21,6 +21,11 @@ import { getAllEvents } from '../lib/eventLib'
 // 7. CSS Party and status assessment
 
 export default function Home({ data, eventData }) {
+  
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log('handling submit')
+  }
 
   console.log(eventData)
   return (
@@ -35,7 +40,7 @@ export default function Home({ data, eventData }) {
     </header>
       <main>
         <Calendar eventData={data.sampleData} month={data.sampleMonth} />
-        <EventForm />
+        <EventForm handleSubmit={handleSubmit}/>
 
 
       </main>

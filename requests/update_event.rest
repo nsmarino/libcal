@@ -1,0 +1,9 @@
+PUT http://localhost:3000/api/events/
+Content-Type: application/json
+
+{
+  "title": "updated blog",
+  "author": "milhouse",
+  "url": "website",
+  "likes": 17
+}

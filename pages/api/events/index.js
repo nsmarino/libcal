@@ -1,5 +1,5 @@
-import dbConnect from '../../utils/dbConnect'
-import Event from '../../models/Event'
+import dbConnect from '../../../utils/dbConnect'
+import Event from '../../../models/Event'
 
 export default async function eventsHandler(req, res) {
   const { method } = req
