@@ -1,5 +1,14 @@
 import mongoose from 'mongoose'
 
+const patronSchema = new mongoose.Schema({
+  firstName: String,
+  lastName: String,
+  address: String,
+  phone: String,
+  email: String,
+  libraryCard: String,
+})
+
 const EventSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -17,9 +26,7 @@ const EventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  registered: {
-    type: Array,
-  },
+  registered: [patronSchema],
 })
 
 EventSchema.set('toJSON', {

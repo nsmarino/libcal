@@ -1,9 +1,14 @@
-PUT http://localhost:3000/api/events/
+PUT http://localhost:3000/api/events/5f01dece0f6037417ccddcf3
 Content-Type: application/json
 
 {
-  "title": "updated blog",
-  "author": "milhouse",
-  "url": "website",
-  "likes": 17
+  "name": "Knitting",
+  "description": "This is a club.",
+  "date": "2020-07-13",
+  "time": "12:00",
+  "registered": [
+    {
+      "firstName": "CHARLIE"
+    }
+  ]
 }

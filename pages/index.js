@@ -7,17 +7,21 @@ import EventForm from '../components/EventForm'
 
 // API SERVICE:
 import { getAllEvents, addEvent } from '../lib/eventLib'
-import data from '../sampleData'
 
 // HOOKS:
 import { useField } from '../hooks/index'
 
-
-export default function Home({ data, eventData }) {
+export default function Home({ eventData }) {
   const eventName = useField('text')
   const eventDescription = useField('textarea')
   const eventDate = useField('date')
-  const eventTime = useField('time')
+  const eventTime = useField('time')  
+
+  const sampleMonth = {
+    name: 'JULY',
+    days: 31,
+    startsOn: 'Sunday'
+    }
   
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -49,10 +53,10 @@ export default function Home({ data, eventData }) {
       </Head>
     <header>
       <h1>event calendar</h1>
-      <p>{data.sampleMonth.name}</p>
+      <p>{sampleMonth.name}</p>
     </header>
       <main>
-        <Calendar eventData={data.sampleData} month={data.sampleMonth} newEventData={eventData} />
+        <Calendar month={sampleMonth} eventData={eventData} />
         
         <EventForm 
           name={eventName}
@@ -71,11 +75,11 @@ export default function Home({ data, eventData }) {
 export async function getServerSideProps() {
   const eventData = await getAllEvents()
   // Pass data to the page via props
-  return { props: { data, eventData } }
+  return { props: { eventData } }
 }
 
 // ROADMAP:
-// 1. Display events from MongoDB on calendar interface
+// 1. Display events from MongoDB on calendar interface [yes]
 // 2. Clicking on event gives you details view where you can register (PUT request)
 // 3. Add all form parameters to event creation
 // 4. Make event object more complex - multiple dates, validation of carmel patrons

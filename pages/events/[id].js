@@ -1,16 +1,21 @@
 import Link from 'next/link'
 
-import { getEventData, getEvent } from '../../lib/eventLib'
+import { getEvent } from '../../lib/eventLib'
 
 export default function EventPage({ event }) {
-    console.log(event)
     return (
         <div>
             <h2>{event.name}</h2>
-            <p>{event.time}</p>
-            <p>Registered: {event.registered.length}</p>
             <p>{event.description}</p>
-            <button>register</button>
+            <p>time: {event.time}</p>
+            <p>Registered: {event.registered.length}</p>
+
+            <Link href="/events/register/[id]" as={`/events/register/${event.id}`}>
+              <a>            
+                <button>register</button>
+              </a>
+            </Link>
+
             <Link href="/">
               <a>
                 <button>back</button>
