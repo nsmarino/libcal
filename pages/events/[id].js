@@ -1,12 +1,12 @@
 import Link from 'next/link'
 
-import { getEventData } from '../../lib/eventLib'
+import { getEventData, getEvent } from '../../lib/eventLib'
 
 export default function EventPage({ event }) {
     console.log(event)
     return (
         <div>
-            <h2>{event.title}</h2>
+            <h2>{event.name}</h2>
             <p>{event.time}</p>
             <p>Registered: {event.registered.length}</p>
             <p>{event.description}</p>
@@ -23,7 +23,7 @@ export default function EventPage({ event }) {
 
 // This gets called on every request
 export async function getServerSideProps({ params }) {
-    const event = getEventData(params.id)
+    const event = await getEvent(params.id)
     // Pass data to the page via props
     return { props: { event } }
   }

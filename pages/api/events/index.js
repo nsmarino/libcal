@@ -15,6 +15,7 @@ export default async function eventsHandler(req, res) {
       break
     case 'POST':
       try {
+        console.log('on server side', req.body)
         const event = await Event.create(
           req.body
         ) /* create a new model in the database */

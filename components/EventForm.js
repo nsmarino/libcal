@@ -1,12 +1,12 @@
-const EventForm = ({ handleSubmit }) => {
+const EventForm = ({ name, description, date, time, handleSubmit }) => {
     return (
         <div>
             <h2>Add an event</h2>
             <form onSubmit={handleSubmit} style={{width: '10em', display: 'flex', flexDirection: 'column'}}>
-                Name of event <input type="text"/>
-                Description <input type="textarea"/>
-                Date <input type="date"/>
-                Time <input type="time"/>
+                Name of event <input {...name.inputProps} />
+                Description <input {...description.inputProps}/>
+                Date <input {...date.inputProps} />
+                Time <input {...time.inputProps} />
                 <button>submit</button>
             </form>
         </div>

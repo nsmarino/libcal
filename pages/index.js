@@ -1,33 +1,46 @@
+// FRAMEWORK:
 import Head from 'next/head'
 
+// COMPONENTS:
 import Calendar from '../components/Calendar'
 import EventForm from '../components/EventForm'
 
+// API SERVICE:
+import { getAllEvents, addEvent } from '../lib/eventLib'
 import data from '../sampleData'
 
-import { getAllEvents } from '../lib/eventLib'
+// HOOKS:
+import { useField } from '../hooks/index'
 
-// ROADMAP:
-// 1. "New Event" form templated on Zoom New Meeting form
-// 2. Set up local mongodb url for development purposes
-// 3. achieve CRUD
-//      C - create events with minimal logic
-//      R - fetch all events / fetch specific event
-//      U - edit events as admin; register as patron
-//      D - admin can delete
-// 4. Add admin login and control panel
-// 5. Event scheduling logic (every 2 weeks, etc)
-// 6. Email blast integration - SendGrid?
-// 7. CSS Party and status assessment
 
 export default function Home({ data, eventData }) {
+  const eventName = useField('text')
+  const eventDescription = useField('textarea')
+  const eventDate = useField('date')
+  const eventTime = useField('time')
   
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('handling submit')
+    console.log(typeof eventDate.inputProps.value)
+
+    const newEvent = {
+      name: eventName.inputProps.value,
+      description: eventDescription.inputProps.value,
+      date: eventDate.inputProps.value,
+      time: eventTime.inputProps.value,
+      registered: [],
+    }
+
+    // POST REQUEST TO 'API/EVENTS'
+    addEvent(newEvent)
+      .then(newEvent=>console.log(newEvent))
+
+    eventName.reset()
+    eventDescription.reset()
+    eventDate.reset()
+    eventTime.reset()
   }
 
-  console.log(eventData)
   return (
     <div className="container">
       <Head>
@@ -39,9 +52,15 @@ export default function Home({ data, eventData }) {
       <p>{data.sampleMonth.name}</p>
     </header>
       <main>
-        <Calendar eventData={data.sampleData} month={data.sampleMonth} />
-        <EventForm handleSubmit={handleSubmit}/>
-
+        <Calendar eventData={data.sampleData} month={data.sampleMonth} newEventData={eventData} />
+        
+        <EventForm 
+          name={eventName}
+          description={eventDescription}
+          date={eventDate}
+          time={eventTime}
+          handleSubmit={handleSubmit}
+        />
 
       </main>
     </div>
@@ -54,3 +73,22 @@ export async function getServerSideProps() {
   // Pass data to the page via props
   return { props: { data, eventData } }
 }
+
+// ROADMAP:
+// 1. Display events from MongoDB on calendar interface
+// 2. Clicking on event gives you details view where you can register (PUT request)
+// 3. Add all form parameters to event creation
+// 4. Make event object more complex - multiple dates, validation of carmel patrons
+// 5. Add all necessary features incl validation to registration form
+// 6. Write tests for events API and registration.
+// 7. Add admin panel.
+// 8. Email integration.
+// 9. CSS
+
+// FEATURES:
+// - Server-side-rendering with Next JS
+// - Extensive use of Fetch API and Next JS Pages API
+// - MongoDB integration with Mongoose
+// - Testing suites ???
+// - Admin panel ???
+// - Email integration ???
