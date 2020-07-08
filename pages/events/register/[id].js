@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import { getEvent, updateEvent } from '../../../lib/eventLib'
+import { getEvent, updateEvent } from '../../../services/eventService'
 import { useField } from '../../../hooks/index'
 
 import RegForm from '../../../components/RegForm'

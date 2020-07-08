@@ -3,10 +3,14 @@ import Link from 'next/link'
 import style from './calendar.module.css'
 
 const Calendar = ({ eventData, month }) => {
-  // parseInt(event.date.substring(8),10)
+  if (!month) return null
+
+  // this is presentational so it should go here
+  const lastDaysOfPreviousMonth = () => console.log('last days of previous month')
+
 
   const findEvents = (day) => {
-    // const events = eventData.filter(event => event.date === day)
+    // now that i understand the date object better i can probably make this less ugly
     const events = eventData.filter(event => parseInt(event.date.substring(8),10) === day)
     return events.map(event =>
     <Link href="/events/[id]" as={`/events/${event.id}`} key={event.id}>
@@ -17,7 +21,7 @@ const Calendar = ({ eventData, month }) => {
 
   const displayMonth = () => {
       const days = []
-      for (let i=0; i<month.days; i++) {
+      for (let i=0; i<month.length; i++) {
           days.push(i+1)
       }
       return days.map(day => 
@@ -29,9 +33,12 @@ const Calendar = ({ eventData, month }) => {
   }
 
   return (
+  <>
+  <h2>{month.name} {month.year}</h2>
   <div className={style.calContainer}>
       {displayMonth()}
   </div>
+  </>
   )
 }
 

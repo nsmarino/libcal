@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import { getEvent } from '../../lib/eventLib'
+import { getEvent } from '../../services/eventService'
 
 export default function EventPage({ event }) {
     return (
