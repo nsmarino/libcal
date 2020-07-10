@@ -9,14 +9,18 @@ const Calendar = ({ eventData, month }) => {
   const lastDaysOfPreviousMonth = () => console.log('last days of previous month')
 
 
+
   const findEvents = (day) => {
-    // now that i understand the date object better i can probably make this less ugly
-    const events = eventData.filter(event => parseInt(event.date.substring(8),10) === day)
-    return events.map(event =>
-    <Link href="/events/[id]" as={`/events/${event.id}`} key={event.id}>
-      <a>{event.name}</a>
-    </Link>
-    )
+    const events = eventData.filter(event =>
+      event.dates.some(date => 
+        date.day === day)
+      )
+    // console.log(events)
+    return events.length === 0 ? null : events.map(event =>
+       <Link href="/events/[id]" as={`/events/${event.id}`} key={event.id}>
+        <a>{event.name}</a>
+      </Link>
+      )
   }
 
   const displayMonth = () => {

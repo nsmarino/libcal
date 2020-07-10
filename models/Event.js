@@ -9,6 +9,11 @@ const patronSchema = new mongoose.Schema({
   libraryCard: String,
 })
 
+const dateSchema = new mongoose.Schema({
+  day: Number,
+  month: Number,
+  year: Number,
+})
 const EventSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -18,8 +23,8 @@ const EventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  date: {
-    type: String,
+  dates: {
+    type: [dateSchema],
     required: true,
   },
   time: {

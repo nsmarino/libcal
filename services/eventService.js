@@ -52,10 +52,19 @@ export const updateEvent = async (id, data) => {
     return eventData
 }
 
-// // THIS USES DUMMY DATA
-// import data from '../sampleData'
-
-// export const getEventData = (id) => {
-//     const event = data.sampleData.find(event=>event.id.toString()===id)
-//     return event
-// }
+export const getEventsForCurrentMonth = (currentMonth) => {
+  // dummy data, baby
+return [{
+  name: "Knitting",
+  description: "This is a club",
+  dates: [
+    {
+      day: 5,
+      month: 7,
+      year: 2020,
+    },
+  ],
+  time: "12:00",
+  registered: [],
+}]
+}

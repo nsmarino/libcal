@@ -2,9 +2,13 @@ post http://localhost:3000/api/events
 Content-Type: application/json
  
 {
-  "name": "Knitting",
-  "description": "This is a club.",
-  "date": "2020-07-13",
-  "time": "12:00",
-  "registered": []
+  "name":"Book club",
+  "description":"Another club for you",
+  "time":"4:00",
+  "dates":[
+    {"day":3,"month":6,"year":2020},
+    {"day":14,"month":6,"year":2020},
+    {"day":21,"month":6,"year":2020}
+  ],
+  "registered":[]
 }

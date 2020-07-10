@@ -6,7 +6,7 @@ import Calendar from '../components/Calendar'
 import EventForm from '../components/EventForm'
 
 // API SERVICE:
-import { getAllEvents, addEvent } from '../services/eventService'
+import { getAllEvents, addEvent, getEventsForCurrentMonth } from '../services/eventService'
 
 // HOOKS:
 import { useState, useEffect } from 'react'
@@ -15,6 +15,7 @@ import { useField } from '../hooks/index'
 
 export default function Home({ eventData }) {
   const [month, setMonth] = useState(null)
+  const [eventsInMonth, setEventsInMonth] = useState(null)
   
   // custom hook for form handling:
   const eventName = useField('text')
@@ -22,6 +23,7 @@ export default function Home({ eventData }) {
   const eventDate = useField('date')
   const eventTime = useField('time')  
 
+  // obtain month and day names as strings
   const monthArr = [
     'January',
     'February',
@@ -59,12 +61,12 @@ export default function Home({ eventData }) {
   }
 
   const getCurrentMonth = () => {
-    console.log('setting current month...')
+    // console.log('setting current month...')
     const todaysDate = new Date()
     const currentMonth = todaysDate.getMonth()
     const currentYear = todaysDate.getFullYear() 
     const monthObject = getMonthObject(currentMonth, currentYear)
-    console.log(monthObject)
+    // console.log(monthObject)
     setMonth(monthObject)
   }
 
@@ -89,6 +91,21 @@ export default function Home({ eventData }) {
   useEffect(() => {
     getCurrentMonth()
   }, [])
+
+
+  // only pass events for current month to calendar component
+  useEffect(() => {
+    const currentMonth = month || {number: null}
+    console.log("event data from server", eventData)
+    console.log("current month", month)
+    const eventsInCurrentMonth = eventData.filter(event =>
+      event.dates.some(date => 
+        date.month === currentMonth.number)
+      )
+    // console.log(eventsInCurrentMonth)
+    setEventsInMonth(eventsInCurrentMonth)
+    // console.log('month has changed')
+  }, [month])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -126,7 +143,7 @@ export default function Home({ eventData }) {
         <button onClick={getPreviousMonth}>previous</button>
         <button onClick={getCurrentMonth}>current month</button>
         <button onClick={getNextMonth}>next</button>
-        <Calendar month={month} eventData={eventData} />
+        <Calendar month={month} eventData={eventsInMonth} />
         
         <EventForm 
           name={eventName}
@@ -144,20 +161,19 @@ export default function Home({ eventData }) {
 // This gets called on every request
 export async function getServerSideProps() {
   const eventData = await getAllEvents()
+
+  // const eventsInCurrentMonth = await getEventsForCurrentMonth()
+
   // Pass data to the page via props
   return { props: { eventData } }
 }
 
 // ROADMAP:
-// 1. Display events from MongoDB on calendar interface
-// 2. Clicking on event gives you details view where you can register (PUT request)
-// 3. Add all form parameters to event creation
-// 4. Make event object more complex - multiple dates, validation of carmel patrons
-// 5. Add all necessary features incl validation to registration form
-// 6. Write tests for events API and registration.
-// 7. Add admin panel.
-// 8. Email integration.
-// 9. CSS
+
+// 1. each time the month changes, fetch events for that month
+// 2. refine event object and creation form
+// 3. add admin login - needed for creation form
+// 4. email to registered patrons
 
 // FEATURES:
 // - Server-side-rendering with Next JS
