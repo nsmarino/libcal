@@ -2,13 +2,13 @@ post http://localhost:3000/api/events
 Content-Type: application/json
  
 {
-  "name":"Book club",
-  "description":"Another club for you",
-  "time":"4:00",
+  "name":"Jumanji",
+  "description":"Dangerous game",
+  "time":"2:00",
   "dates":[
-    {"day":3,"month":6,"year":2020},
-    {"day":14,"month":6,"year":2020},
-    {"day":21,"month":6,"year":2020}
+    {"day":10,"month":5,"year":2020},
+    {"day":10,"month":6,"year":2020},
+    {"day":10,"month":7,"year":2020}
   ],
   "registered":[]
 }

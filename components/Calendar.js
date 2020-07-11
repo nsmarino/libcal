@@ -5,24 +5,23 @@ import style from './calendar.module.css'
 const Calendar = ({ eventData, month }) => {
   if (!month) return null
 
-  // this is presentational so it should go here
+  // this is presentational so it belongs in this component
   const lastDaysOfPreviousMonth = () => console.log('last days of previous month')
 
-
-
+  // places events on calendar
   const findEvents = (day) => {
-    const events = eventData.filter(event =>
+    const daysEvents = eventData.filter(event =>
       event.dates.some(date => 
         date.day === day)
       )
-    // console.log(events)
-    return events.length === 0 ? null : events.map(event =>
+    return daysEvents.length === 0 ? null : daysEvents.map(event =>
        <Link href="/events/[id]" as={`/events/${event.id}`} key={event.id}>
         <a>{event.name}</a>
       </Link>
       )
   }
 
+  // creates div for each day of month
   const displayMonth = () => {
       const days = []
       for (let i=0; i<month.length; i++) {

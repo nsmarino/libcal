@@ -52,19 +52,17 @@ export const updateEvent = async (id, data) => {
     return eventData
 }
 
-export const getEventsForCurrentMonth = (currentMonth) => {
-  // dummy data, baby
-return [{
-  name: "Knitting",
-  description: "This is a club",
-  dates: [
+// should i use??
+export const getEventsByMonth = async (currentMonth) => {
+  const res = await fetch(
+    `http://localhost:3000/api/events/byMonth`,
     {
-      day: 5,
-      month: 7,
-      year: 2020,
-    },
-  ],
-  time: "12:00",
-  registered: [],
-}]
+      method: 'POST', 
+      headers: {'Content-Type': 'application/json'}, 
+      body: JSON.stringify(currentMonth),
+    }
+  )
+  const resToJson = await res.json()
+  const eventData = resToJson.data
+  return eventData
 }

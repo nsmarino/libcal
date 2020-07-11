@@ -6,16 +6,59 @@ import Calendar from '../components/Calendar'
 import EventForm from '../components/EventForm'
 
 // API SERVICE:
-import { getAllEvents, addEvent, getEventsForCurrentMonth } from '../services/eventService'
+import { addEvent, getEventsByMonth } from '../services/eventService'
 
 // HOOKS:
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useField } from '../hooks/index'
 // custom useMonth hook possible???
 
-export default function Home({ eventData }) {
-  const [month, setMonth] = useState(null)
-  const [eventsInMonth, setEventsInMonth] = useState(null)
+const monthArr = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+  ];
+const dayArr = [
+  'Sunday',
+  'Monday', 
+  'Tuesday', 
+  'Wednesday', 
+  'Thursday', 
+  'Friday', 
+  'Saturday', 
+]
+const getMonthObject = (month, year) => {
+  const name = monthArr[month]
+  const startsOn = new Date(year, month, 1).getDay()
+  const length = new Date(year, month+1, 0).getDate()
+  return {
+    name,
+    length,
+    startsOn,
+    number: month,
+    year,
+  }
+}
+const getCurrentMonth = () => {
+  const todaysDate = new Date()
+  const currentMonth = todaysDate.getMonth()
+  const currentYear = todaysDate.getFullYear() 
+  const monthObject = getMonthObject(currentMonth, currentYear)
+  return monthObject  
+}
+
+export default function Home({ monthData, eventData }) {  
+  const [month, setMonth] = useState(monthData)
+  const [events, setEvents] = useState(eventData)
   
   // custom hook for form handling:
   const eventName = useField('text')
@@ -23,90 +66,32 @@ export default function Home({ eventData }) {
   const eventDate = useField('date')
   const eventTime = useField('time')  
 
-  // obtain month and day names as strings
-  const monthArr = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-    ];
-  const dayArr = [
-    'Sunday',
-    'Monday', 
-    'Tuesday', 
-    'Wednesday', 
-    'Thursday', 
-    'Friday', 
-    'Saturday', 
-  ]
-  const getMonthObject = (month, year) => {
-    const name = monthArr[month]
-    const startsOn = new Date(year, month, 1).getDay()
-    const length = new Date(year, month+1, 0).getDate()
-    return {
-      name,
-      length,
-      startsOn,
-      number: month,
-      year,
-    }
+  // functions for buttons. updates month and
+  // sends POST request to get events for month.
+  const backToCurrentMonth = async () => {
+    const currentMonth = getCurrentMonth()
+    setMonth(currentMonth)
+    const events = await getEventsByMonth(currentMonth)
+    setEvents(events)
   }
-
-  const getCurrentMonth = () => {
-    // console.log('setting current month...')
-    const todaysDate = new Date()
-    const currentMonth = todaysDate.getMonth()
-    const currentYear = todaysDate.getFullYear() 
-    const monthObject = getMonthObject(currentMonth, currentYear)
-    // console.log(monthObject)
-    setMonth(monthObject)
-  }
-
-  const getPreviousMonth = () => {
-    console.log('setting previous month')
+  const getPreviousMonth = async () => {
     const previousMonth = month.number === 0 ? 11 : month.number - 1
     const year = month.number === 0 ? month.year - 1 : month.year
     const previousMonthObject = getMonthObject(previousMonth, year)
-    console.log(previousMonthObject)
+    const previousMonthEvents = await getEventsByMonth(previousMonthObject)
+    setEvents(previousMonthEvents)
     setMonth(previousMonthObject)
   }
-
-  const getNextMonth = () => {
-    console.log('setting next month')
+  const getNextMonth = async () => {
     const nextMonth = month.number === 11 ? 0 : month.number + 1
     const year = month.number === 11 ? month.year + 1 : month.year
     const nextMonthObject = getMonthObject(nextMonth, year)
-    console.log(nextMonthObject)
+    const nextMonthEvents = await getEventsByMonth(nextMonthObject)
+    setEvents(nextMonthEvents)
     setMonth(nextMonthObject)
   }
 
-  useEffect(() => {
-    getCurrentMonth()
-  }, [])
-
-
-  // only pass events for current month to calendar component
-  useEffect(() => {
-    const currentMonth = month || {number: null}
-    console.log("event data from server", eventData)
-    console.log("current month", month)
-    const eventsInCurrentMonth = eventData.filter(event =>
-      event.dates.some(date => 
-        date.month === currentMonth.number)
-      )
-    // console.log(eventsInCurrentMonth)
-    setEventsInMonth(eventsInCurrentMonth)
-    // console.log('month has changed')
-  }, [month])
-
+  // update to account for dates array
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log(typeof eventDate.inputProps.value)
@@ -141,9 +126,10 @@ export default function Home({ eventData }) {
     </header>
       <main>
         <button onClick={getPreviousMonth}>previous</button>
-        <button onClick={getCurrentMonth}>current month</button>
+        <button onClick={backToCurrentMonth}>current month</button>
         <button onClick={getNextMonth}>next</button>
-        <Calendar month={month} eventData={eventsInMonth} />
+
+        <Calendar month={month} eventData={events} />
         
         <EventForm 
           name={eventName}
@@ -157,28 +143,16 @@ export default function Home({ eventData }) {
     </div>
   )
 }
-
 // This gets called on every request
 export async function getServerSideProps() {
-  const eventData = await getAllEvents()
-
-  // const eventsInCurrentMonth = await getEventsForCurrentMonth()
-
-  // Pass data to the page via props
-  return { props: { eventData } }
+  const monthData = getCurrentMonth()
+  const eventData = await getEventsByMonth(monthData)
+  return { props: { monthData, eventData } }
 }
 
 // ROADMAP:
 
-// 1. each time the month changes, fetch events for that month
+// 1. each time the month changes, fetch events for that month [✓ 7/11/20]
 // 2. refine event object and creation form
 // 3. add admin login - needed for creation form
 // 4. email to registered patrons
-
-// FEATURES:
-// - Server-side-rendering with Next JS
-// - Extensive use of Fetch API and Next JS Pages API
-// - MongoDB integration with Mongoose
-// - Testing suites ???
-// - Admin panel ???
-// - Email integration ???
