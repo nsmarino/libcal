@@ -63,8 +63,8 @@ export default function Home({ monthData, eventData }) {
   // custom hook for form handling:
   const eventName = useField('text')
   const eventDescription = useField('textarea')
-  const eventDate = useField('date')
-  const eventTime = useField('time')  
+  const eventDate = useField('date', new Date().toISOString().substring(0, 10))
+  const eventTime = useField('time', '12:00')  
 
   // functions for buttons. updates month and
   // sends POST request to get events for month.
