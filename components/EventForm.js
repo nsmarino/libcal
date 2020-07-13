@@ -1,10 +1,22 @@
-import { useState } from 'react'
 
-const EventForm = ({ name, description, date, time, handleSubmit }) => {
-   const [recurring, setRecurring] = useState(false)
-   const [frequency, setFrequency] = useState('daily') 
+const EventForm = ({ 
+  name, 
+  description, 
+  date, 
+  time,
+  durationHr,
+  durationMin,
 
-   const testBoolean = true
+  recurring,
+  frequency,
+  setFrequency,
+
+  dailyRepeat,
+
+  maxParticipants,
+  priorityCarmel,
+  handleSubmit }) => {
+
     return (
         <div>
             <h2>Add an event</h2>
@@ -12,8 +24,9 @@ const EventForm = ({ name, description, date, time, handleSubmit }) => {
                 Name of event <input {...name.inputProps} />
                 Description <input {...description.inputProps}/>
                 <p>When <input {...date.inputProps} /> <input {...time.inputProps} /></p>
+                
                 <p>Duration 
-                <select name="hour" id="hour">
+                <select name="hour" id="hour" {...durationHr.inputProps}>
                   <option value="0">0</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
@@ -28,7 +41,8 @@ const EventForm = ({ name, description, date, time, handleSubmit }) => {
                   <option value="11">11</option>
                   <option value="12">12</option>
                 </select> hr
-                <select name="minutes" id="minutes">
+
+                <select name="minutes" id="minutes" {...durationMin.inputProps}>
                   <option value="0">0</option>
                   <option value="15">15</option>
                   <option value="30">30</option>
@@ -40,14 +54,14 @@ const EventForm = ({ name, description, date, time, handleSubmit }) => {
                     type="checkbox" 
                     name="recurring" 
                     id="recurring" 
-                    onClick={()=>setRecurring(!recurring)}
+                    onClick={recurring.toggle}
                   /> Recurring meeting
-                  {recurring ?
-                    <span style={{fontWeight:"bold"}}>This is a recurring meeting</span>
+                  {recurring.value ?
+                    <span style={{fontWeight:"bold"}}> This is a recurring meeting</span>
                   : null}
                 </p>
 
-                { recurring ? // BEGIN CONDITIONAL RENDER default: daily, every 1 day, for seven days
+                { recurring.value ? // BEGIN CONDITIONAL RENDER default: daily, every 1 day, for seven days
                   <>
                   <p>Recurrence 
                     <select name="recurrence" id="recurrence" onChange={(e) => setFrequency(e.target.value)}>
@@ -59,7 +73,7 @@ const EventForm = ({ name, description, date, time, handleSubmit }) => {
                   
                   { frequency === 'daily' ? 
                     <p>(FOR DAILY RECURRENCE)Repeat every 
-                        <select name="repeatDaily" id="repeatDaily">
+                        <select name="repeatDaily" id="repeatDaily" {...dailyRepeat.inputProps}>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -188,10 +202,15 @@ const EventForm = ({ name, description, date, time, handleSubmit }) => {
 
 
                 <p>
-                Max participants: <input type="text"/>
+                Max participants: <input {...maxParticipants.inputProps}/>
                 </p>
                 <p>
-                <input type="checkbox" name="residentPriority" id="residentPriority"/> Prioritize Carmel residents
+                <input 
+                  type="checkbox" 
+                  name="residentPriority" 
+                  id="residentPriority"
+                  onClick={priorityCarmel.toggle}
+                /> Prioritize Carmel residents
                 </p>
                 <p>Required fields for registration -- library card, email, address? etc</p>
                 <button>submit</button>

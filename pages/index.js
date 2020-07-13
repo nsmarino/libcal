@@ -61,11 +61,18 @@ export default function Home({ monthData, eventData }) {
   const [events, setEvents] = useState(eventData)
   
   // custom hook for form handling:
-  const eventName = useField('text')
-  const eventDescription = useField('textarea')
-  const eventDate = useField('date', new Date().toISOString().substring(0, 10))
-  const eventTime = useField('time', '12:00')  
+  // const eventName = useField('text')
+  // const eventDescription = useField('textarea')
+  // const eventDate = useField('date', new Date().toISOString().substring(0, 10))
+  // const eventTime = useField('time', '12:00')
 
+  // const eventDurationHr = '' // select
+  // const eventDurationMin = '' // select
+  // // DAILY RECURRENCE
+  // const dailyRepeat = '' // select
+  // const dailyEndDate
+
+  // const maxParticipants
   // functions for buttons. updates month and
   // sends POST request to get events for month.
   const backToCurrentMonth = async () => {
@@ -91,29 +98,6 @@ export default function Home({ monthData, eventData }) {
     setMonth(nextMonthObject)
   }
 
-  // update to account for dates array
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log(typeof eventDate.inputProps.value)
-
-    const newEvent = {
-      name: eventName.inputProps.value,
-      description: eventDescription.inputProps.value,
-      date: eventDate.inputProps.value,
-      time: eventTime.inputProps.value,
-      registered: [],
-    }
-
-    // POST REQUEST TO 'API/EVENTS'
-    addEvent(newEvent)
-      .then(newEvent=>console.log(newEvent))
-
-    eventName.reset()
-    eventDescription.reset()
-    eventDate.reset()
-    eventTime.reset()
-  }
-
   return (
     <div className="container">
       <Head>
@@ -131,13 +115,13 @@ export default function Home({ monthData, eventData }) {
 
         <Calendar month={month} eventData={events} />
         
-        <EventForm 
+        {/* <EventForm 
           name={eventName}
           description={eventDescription}
           date={eventDate}
           time={eventTime}
           handleSubmit={handleSubmit}
-        />
+        /> */}
 
       </main>
     </div>
