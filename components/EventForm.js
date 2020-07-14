@@ -1,3 +1,42 @@
+import CheckboxContainer from "./Checkbox"
+
+const checkboxes = [
+  {
+      name: 'sunday',
+      key: 'sunday',
+      label: 'Sunday',
+  },
+  {
+      name: 'monday',
+      key: 'monday',
+      label: 'Monday',
+  },
+  {
+      name: 'tuesday',
+      key: 'tuesday',
+      label: 'Tuesday',
+  },
+  {
+      name: 'wednesday',
+      key: 'wednesday',
+      label: 'Wednesday',
+  },
+  {
+      name: 'thursday',
+      key: 'thursday',
+      label: 'Thursday',
+  },
+  {
+      name: 'friday',
+      key: 'friday',
+      label: 'Friday',
+  },
+  {
+      name: 'saturday',
+      key: 'saturday',
+      label: 'Saturday',
+  },
+]
 
 const EventForm = ({ 
   name, 
@@ -12,6 +51,20 @@ const EventForm = ({
   setFrequency,
 
   dailyRepeat,
+
+  weeklyRepeat,
+  weeklyDays,
+  setWeeklyDays,
+
+  monthlyRepeat,
+  handleMonthlyRecurrence,
+  monthlyByDate,
+  monthlyByOccurencesOrdinal,
+  monthlyByOccurencesDay,
+
+  handleEndType,
+  endByDate,
+  endByOccurences,
 
   maxParticipants,
   priorityCarmel,
@@ -87,7 +140,7 @@ const EventForm = ({
                   { frequency === 'weekly' ? 
                     <>
                       <p>(FOR WEEKLY RECURRENCE)Repeat every 
-                  <select name="repeatWeekly" id="repeatWeekly">
+                  <select name="repeatWeekly" id="repeatWeekly" {...weeklyRepeat.inputProps}>
                   <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -97,71 +150,48 @@ const EventForm = ({
                     <option value="7">7</option>
                     <option value="8">8</option>
                   </select> weeks
-                </p>
+                </p>                
                       <div>(FOR WEEKLY RECURRENCE) Occurs on
-                <div>
-                  <input type="checkbox" id="sunday" name="sunday" />
-                  <label htmlFor="sunday">Sunday</label>
-                </div>
-                <div>
-                  <input type="checkbox" id="monday" name="monday" />
-                  <label htmlFor="monday">Monday</label>
-                </div>
-                <div>
-                  <input type="checkbox" id="tuesday" name="tuesday" />
-                  <label htmlFor="tuesday">Tuesday</label>
-                </div>
-                <div>
-                  <input type="checkbox" id="wednesday" name="wednesday" />
-                  <label htmlFor="wednesday">Wednesday</label>
-                </div>
-                <div>
-                  <input type="checkbox" id="thursday" name="thursday" />
-                  <label htmlFor="thursday">Thursday</label>
-                </div>
-                <div>
-                  <input type="checkbox" id="friday" name="friday" />
-                  <label htmlFor="friday">Friday</label>
-                </div>
-                <div>
-                  <input type="checkbox" id="saturday" name="saturday" />
-                  <label htmlFor="saturday">Saturday</label>
-                </div>
-                </div>
+                        <CheckboxContainer 
+                          checkboxes={checkboxes} 
+                          checkedItems={weeklyDays} 
+                          setCheckedItems={setWeeklyDays} 
+                        />
+                      </div>
                     </>
                   : null}
 
                   { frequency === 'monthly' ?
                     <>
-                      <p>(FOR MONTHLY RECURRENCE)Repeat every 
-                        <select name="repeatMonthly" id="repeatMonthly">
+                      <div>(FOR MONTHLY RECURRENCE)Repeat every 
+                        <select name="repeatMonthly" id="repeatMonthly" {...monthlyRepeat.inputProps}>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
                         </select> months
-                        </p>
+                        </div>
                       <div>(FOR MONTHLY RECURRENCE) Occurs on
                         <div>
-                            <input type="radio" name="monthlyOccur" id="byDate" />
+                            <input type="radio" name="monthlyOccur" id="byDate"  onClick={() => handleMonthlyRecurrence('byDate')} />
                             <label htmlFor="byDate">Day
-                                <select name="occurOnDate" id="occurOnDate">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
+                                <select name="occurOnDate" id="occurOnDate" {...monthlyByDate.inputProps}>
+                                  <option value="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
                                 </select> of the month
                             </label>
                         </div>
                         <div>
-                            <input type="radio" name="monthlyOccur" id="byDay" />
+                            <input type="radio" name="monthlyOccur" id="byDay" onClick={() => handleMonthlyRecurrence('byDay')} />
                             <label htmlFor="byDay">
-                            <select name="occurOnDayFrequency" id="occurOnDayFrequency">
+                            <select name="occurOnDayFrequency" id="occurOnDayFrequency" {...monthlyByOccurencesOrdinal.inputProps}>
                                 <option value="first">First</option> 
                                 <option value="second">Second</option>
                                 <option value="third">Third</option> 
                                 <option value="fourth">Fourth</option>
                                 <option value="Last">Last</option> 
                             </select> 
-                            <select name="occurOnDay" id="occurOnDay">
+                            <select name="occurOnDay" id="occurOnDay" {...monthlyByOccurencesDay.inputProps}>
                                 <option value="sunday">Sunday</option>
                                 <option value="monday">Monday</option>
                                 <option value="tuesday">Tuesday</option>
@@ -176,19 +206,15 @@ const EventForm = ({
                     </>
                   : null}
 
-
-
-
-                
                 <div>End date
                   <div>
-                    <input type="radio" name="endDate" id="by" />
-                    <label htmlFor="by">By <input type="date"/></label>
+                    <input type="radio" name="endDate" id="by" onClick={() => handleEndType('by')}/>
+                    <label htmlFor="by">By <input {...endByDate.inputProps}/></label>
                   </div>
                   <div>
-                    <input type="radio" name="endDate" id="after" />
+                    <input type="radio" name="endDate" id="after" onClick={() => handleEndType('after')}/>
                     <label htmlFor="after">After 
-                        <select name="afterOccurences" id="afterOccurences">
+                        <select name="afterOccurences" id="afterOccurences" {...endByOccurences.inputProps}>
                           <option value="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
@@ -212,7 +238,7 @@ const EventForm = ({
                   onClick={priorityCarmel.toggle}
                 /> Prioritize Carmel residents
                 </p>
-                <p>Required fields for registration -- library card, email, address? etc</p>
+                <p>...Other required fields for registration -- library card, email, address? etc</p>
                 <button>submit</button>
             </form>
         </div>

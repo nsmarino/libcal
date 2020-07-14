@@ -6,6 +6,46 @@ import { addEvent } from '../services/eventService'
 
 import { useState } from 'react'
 import { useField, useHTMLSelect, useBoolean } from '../hooks/index'
+import CheckboxContainer from '../components/Checkbox'
+
+const checkboxes = [
+    {
+        name: 'sunday',
+        key: 'sunday',
+        label: 'Sunday',
+    },
+    {
+        name: 'monday',
+        key: 'monday',
+        label: 'Monday',
+    },
+    {
+        name: 'tuesday',
+        key: 'tuesday',
+        label: 'Tuesday',
+    },
+    {
+        name: 'wednesday',
+        key: 'wednesday',
+        label: 'Wednesday',
+    },
+    {
+        name: 'thursday',
+        key: 'thursday',
+        label: 'Thursday',
+    },
+    {
+        name: 'friday',
+        key: 'friday',
+        label: 'Friday',
+    },
+    {
+        name: 'saturday',
+        key: 'saturday',
+        label: 'Saturday',
+    },
+]
+
 
 export default function New() {
 
@@ -29,30 +69,41 @@ export default function New() {
 
   // WEEKLY RECURRENCE
   const weeklyRepeat = useHTMLSelect('1')
-  const [weeklyDays, setWeeklyDays] = useState([]) // will need to write function for setting weeklyDays based on which days are checked
-
+  const [weeklyDays, setWeeklyDays] = useState({}) // will need to write function for setting weeklyDays based on which days are checked
+  
   // MONTHLY RECURRENCE
-  const monthlyRepeat = useHTMLSelect('')
+  const monthlyRepeat = useHTMLSelect('1')
   const [monthlyRecurrenceType, setMonthlyRecurrenceType] = useState('') // radio
+
   const monthlyByDate = useHTMLSelect('')
   const monthlyByOccurencesOrdinal = useHTMLSelect('')
   const monthlyByOccurencesDay = useHTMLSelect('')
 
-   const [endType, setEndType] = useState('') // radio
-   const endByDate = useField('date') // effect hook to calculate default date whenever eventFrequency changes?
-   const endByOccurences = useHTMLSelect('')
+  const [endType, setEndType] = useState('') // radio
+  const endByDate = useField('date') // effect hook to calculate default date whenever eventFrequency changes?
+  const endByOccurences = useHTMLSelect('')
 
-   const maxParticipants = useField('number', 10)
-   const priorityCarmel = useBoolean(false)
+  const maxParticipants = useField('number', 10)
+  const priorityCarmel = useBoolean(false)
 
    ///////////////////////
    // FUNCTION JUNCTION //
    ///////////////////////
+  
+  const resetForm = () => console.log('reset state of all hooks to default')
+
+  // These three handlers are called by processDates to generate 
+  // arrays of dates based on initial date and recurrence options
+  const handleDailyRecurrence = () => console.log('daily recurrence')
+
+  const handleWeeklyRecurrence = () => console.log('weekly recurrence')
+
+  const handleMonthlyRecurrence = () => console.log('monthly recurrence')
 
    const processDates = () => {
-       if (eventFrequency==="daily") console.log("daily event")
-       if(eventFrequency==="weekly") console.log("weekly event")
-       if(eventFrequency==="monthly") console.log("monthly event")
+       if (eventFrequency==="daily") handleDailyRecurrence()
+       if (eventFrequency==="weekly") handleWeeklyRecurrence()
+       if (eventFrequency==="monthly") handleMonthlyRecurrence()
 
        const dateObj = {
          day: parseInt(eventDate.inputProps.value.substring(8), 10),
@@ -98,6 +149,7 @@ export default function New() {
     </Head>
 
     <EventForm 
+          // basic event details
           name={eventName}
           description={eventDescription}
           date={eventDate}
@@ -105,6 +157,7 @@ export default function New() {
           durationHr={eventDurationHr}
           durationMin={eventDurationMin}
           
+          // type of recurrence
           recurring={eventRecurring} 
           frequency={eventFrequency}
           setFrequency={setEventFrequency}
@@ -116,10 +169,20 @@ export default function New() {
           weeklyRepeat={weeklyRepeat}
           weeklyDays={weeklyDays}
           setWeeklyDays={setWeeklyDays} // need to write actual function tho
-          
-          // monthly
-          
 
+          // monthly
+          monthlyRepeat={monthlyRepeat}
+          handleMonthlyRecurrence={setMonthlyRecurrenceType}
+          monthlyByDate={monthlyByDate}
+          monthlyByOccurencesOrdinal={monthlyByOccurencesOrdinal}
+          monthlyByOccurencesDay={monthlyByOccurencesDay}
+
+          // endDate
+          handleEndType={setEndType}
+          endByDate={endByDate}
+          endByOccurences={endByOccurences}
+
+          // other
           maxParticipants={maxParticipants}
           priorityCarmel={priorityCarmel}
 
