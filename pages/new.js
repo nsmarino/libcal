@@ -6,46 +6,6 @@ import { addEvent } from '../services/eventService'
 
 import { useState } from 'react'
 import { useField, useHTMLSelect, useBoolean } from '../hooks/index'
-import CheckboxContainer from '../components/Checkbox'
-
-const checkboxes = [
-    {
-        name: 'sunday',
-        key: 'sunday',
-        label: 'Sunday',
-    },
-    {
-        name: 'monday',
-        key: 'monday',
-        label: 'Monday',
-    },
-    {
-        name: 'tuesday',
-        key: 'tuesday',
-        label: 'Tuesday',
-    },
-    {
-        name: 'wednesday',
-        key: 'wednesday',
-        label: 'Wednesday',
-    },
-    {
-        name: 'thursday',
-        key: 'thursday',
-        label: 'Thursday',
-    },
-    {
-        name: 'friday',
-        key: 'friday',
-        label: 'Friday',
-    },
-    {
-        name: 'saturday',
-        key: 'saturday',
-        label: 'Saturday',
-    },
-]
-
 
 export default function New() {
 
@@ -94,42 +54,60 @@ export default function New() {
 
   // These three handlers are called by processDates to generate 
   // arrays of dates based on initial date and recurrence options
-  const handleDailyRecurrence = () => console.log('daily recurrence')
+  const handleDailyRecurrence = (date) => {
+    console.log(date)
+    console.log("how many days to repeat:",dailyRepeat.inputProps.value)
+    console.log("end:",endType)
+    console.log("by date,",endByDate.inputProps.value,"by occurences",endByOccurences.inputProps.value)
+    
+    if (endType==="by") {
+      console.log('youve chosen to end by a certain date')
+    }
+    if (endType==="after") {
+      console.log('youve chose to end after a set number of occurences')
+      for (let i=0;i<endByOccurences.inputProps.value;i++) {
+          console.log(i)
+      }
+    }
+  }
 
   const handleWeeklyRecurrence = () => console.log('weekly recurrence')
 
   const handleMonthlyRecurrence = () => console.log('monthly recurrence')
 
-   const processDates = () => {
-       if (eventFrequency==="daily") handleDailyRecurrence()
-       if (eventFrequency==="weekly") handleWeeklyRecurrence()
-       if (eventFrequency==="monthly") handleMonthlyRecurrence()
+  const processDates = () => {
+    const initialDate = {
+      day: parseInt(eventDate.inputProps.value.substring(8), 10),
+      month: parseInt(eventDate.inputProps.value.substring(5,7),10),
+      year: parseInt(eventDate.inputProps.value.substring(0,4),10),
+    }
 
-       const dateObj = {
-         day: parseInt(eventDate.inputProps.value.substring(8), 10),
-         month: parseInt(eventDate.inputProps.value.substring(5,7),10),
-         year: parseInt(eventDate.inputProps.value.substring(0,4),10),
-       }
-       const datesArray = [dateObj]
-       return datesArray
-   }
+    if (!eventRecurring) return [initialDate]
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
+    if (eventFrequency==="daily") return handleDailyRecurrence(initialDate)
+    if (eventFrequency==="weekly") handleWeeklyRecurrence()
+    if (eventFrequency==="monthly") handleMonthlyRecurrence()
+
+    // temporary return?/fallback...
+    return [initialDate]
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
         
-        const dates = processDates()
-        const newEvent = {
-          name: eventName.inputProps.value,
-          description: eventDescription.inputProps.value,
-          dates,
-          time: eventTime.inputProps.value,
-          duration: `${eventDurationHr.inputProps.value} hr, ${eventDurationMin.inputProps.value} min`,
-          registered: [],
-          maxParticipants: parseInt(maxParticipants.inputProps.value,10),
-          priorityCarmel: priorityCarmel.value,
-        }
+    const dates = processDates()
+    const newEvent = {
+        name: eventName.inputProps.value,
+        description: eventDescription.inputProps.value,
+        dates,
+        time: eventTime.inputProps.value,
+        duration: `${eventDurationHr.inputProps.value} hr, ${eventDurationMin.inputProps.value} min`,
+        registered: [],
+        maxParticipants: parseInt(maxParticipants.inputProps.value,10),
+        priorityCarmel: priorityCarmel.value,
+    }
 
-        console.log(newEvent)
+    console.log(newEvent)
 
         // // POST REQUEST TO 'API/EVENTS'
         // addEvent(newEvent)
@@ -139,7 +117,7 @@ export default function New() {
         // eventDescription.reset()
         // eventDate.reset()
         // eventTime.reset()
-        }
+  }
 
   return (
   <div className="container">
