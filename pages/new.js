@@ -22,7 +22,7 @@ export default function New() {
   const eventDurationMin = useHTMLSelect('0') // select
 
   const eventRecurring = useBoolean(false)
-  const [eventFrequency, setEventFrequency] = useState('daily') 
+  const [recurrenceType, setRecurrenceType] = useState('daily') 
 
   // DAILY RECURRENCE
   const dailyRepeat = useHTMLSelect('1')
@@ -40,7 +40,7 @@ export default function New() {
   const monthlyByOccurencesDay = useHTMLSelect('')
 
   const [endType, setEndType] = useState('') // radio
-  const endByDate = useField('date') // effect hook to calculate default date whenever eventFrequency changes?
+  const endByDate = useField('date') // effect hook to calculate default date whenever recurrenceType changes?
   const endByOccurences = useHTMLSelect('')
 
   const maxParticipants = useField('number', 10)
@@ -52,8 +52,6 @@ export default function New() {
   
   const resetForm = () => console.log('reset state of all hooks to default')
 
-  // These three handlers are called by processDates to generate 
-  // arrays of dates based on initial date and recurrence options
   const handleDailyRecurrence = (date) => {
     console.log(date)
     console.log("how many days to repeat:",dailyRepeat.inputProps.value)
@@ -71,24 +69,25 @@ export default function New() {
     }
   }
 
-  const handleWeeklyRecurrence = () => console.log('weekly recurrence')
-
-  const handleMonthlyRecurrence = () => console.log('monthly recurrence')
-
   const processDates = () => {
-    const initialDate = {
-      day: parseInt(eventDate.inputProps.value.substring(8), 10),
-      month: parseInt(eventDate.inputProps.value.substring(5,7),10),
-      year: parseInt(eventDate.inputProps.value.substring(0,4),10),
-    }
 
     if (!eventRecurring) return [initialDate]
 
-    if (eventFrequency==="daily") return handleDailyRecurrence(initialDate)
-    if (eventFrequency==="weekly") handleWeeklyRecurrence()
-    if (eventFrequency==="monthly") handleMonthlyRecurrence()
+    // input for recurrence handler must have 
+    if (recurrenceType==="daily") { 
+      return handleDailyRecurrence(initialDate)
+    }
+    // if (recurrenceType==="weekly") handleWeeklyRecurrence()
+    // if (recurrenceType==="monthly") handleMonthlyRecurrence()
+    
+    // This will need to be done as a .map() on the array returned from the recurrence handler
+    // const initialDate = {
+    //   day: parseInt(eventDate.inputProps.value.substring(8), 10),
+    //   month: parseInt(eventDate.inputProps.value.substring(5,7),10),
+    //   year: parseInt(eventDate.inputProps.value.substring(0,4),10),
+    // }
 
-    // temporary return?/fallback...
+
     return [initialDate]
   }
 
@@ -137,8 +136,8 @@ export default function New() {
           
           // type of recurrence
           recurring={eventRecurring} 
-          frequency={eventFrequency}
-          setFrequency={setEventFrequency}
+          recurrenceType={recurrenceType}
+          setRecurrenceType={setRecurrenceType}
 
           // daily
           dailyRepeat={dailyRepeat}

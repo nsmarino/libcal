@@ -47,8 +47,8 @@ const EventForm = ({
   durationMin,
 
   recurring,
-  frequency,
-  setFrequency,
+  recurrenceType,
+  setRecurrenceType,
 
   dailyRepeat,
 
@@ -117,14 +117,14 @@ const EventForm = ({
                 { recurring.value ? // BEGIN CONDITIONAL RENDER default: daily, every 1 day, for seven days
                   <>
                   <p>Recurrence 
-                    <select name="recurrence" id="recurrence" onChange={(e) => setFrequency(e.target.value)}>
+                    <select name="recurrence" id="recurrence" onChange={(e) => setRecurrenceType(e.target.value)}>
                       <option value="daily">Daily</option>
                       <option value="weekly">Weekly</option>
                       <option value="monthly">Monthly</option>
                     </select>
                   </p> 
                   
-                  { frequency === 'daily' ? 
+                  { recurrenceType === 'daily' ? 
                     <p>(FOR DAILY RECURRENCE)Repeat every 
                         <select name="repeatDaily" id="repeatDaily" {...dailyRepeat.inputProps}>
                         <option value="1">1</option>
@@ -137,7 +137,7 @@ const EventForm = ({
                     </p>                  
                   : null}
 
-                  { frequency === 'weekly' ? 
+                  { recurrenceType === 'weekly' ? 
                     <>
                       <p>(FOR WEEKLY RECURRENCE)Repeat every 
                   <select name="repeatWeekly" id="repeatWeekly" {...weeklyRepeat.inputProps}>
@@ -161,7 +161,7 @@ const EventForm = ({
                     </>
                   : null}
 
-                  { frequency === 'monthly' ?
+                  { recurrenceType === 'monthly' ?
                     <>
                       <div>(FOR MONTHLY RECURRENCE)Repeat every 
                         <select name="repeatMonthly" id="repeatMonthly" {...monthlyRepeat.inputProps}>

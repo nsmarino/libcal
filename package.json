@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "dotenv": "^8.2.0",
+    "moment": "^2.27.0",
     "mongoose": "^5.9.20",
     "next": "9.4.4",
     "react": "16.13.1",
