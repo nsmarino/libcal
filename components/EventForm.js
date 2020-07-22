@@ -64,7 +64,7 @@ const EventForm = ({
 
   handleEndType,
   endByDate,
-  endByOccurences,
+  endByOccurrences,
 
   maxParticipants,
   priorityCarmel,
@@ -172,9 +172,9 @@ const EventForm = ({
                         </div>
                       <div>(FOR MONTHLY RECURRENCE) Occurs on
                         <div>
-                            <input type="radio" name="monthlyOccur" id="byDate"  onClick={() => handleMonthlyRecurrence('byDate')} />
-                            <label htmlFor="byDate">Day
-                                <select name="occurOnDate" id="occurOnDate" {...monthlyByDate.inputProps}>
+                            <input type="radio" name="monthlyOccur" id="date"  onClick={() => handleMonthlyRecurrence('date')} />
+                            <label htmlFor="date">Day
+                                <select name="occurOnDate" id="occurOnDate" {...monthlyByOccurencesOrdinal.inputProps}>
                                   <option value="1">1</option>
                                   <option value="2">2</option>
                                   <option value="3">3</option>
@@ -182,14 +182,14 @@ const EventForm = ({
                             </label>
                         </div>
                         <div>
-                            <input type="radio" name="monthlyOccur" id="byDay" onClick={() => handleMonthlyRecurrence('byDay')} />
-                            <label htmlFor="byDay">
+                            <input type="radio" name="monthlyOccur" id="day" onClick={() => handleMonthlyRecurrence('day')} />
+                            <label htmlFor="day">
                             <select name="occurOnDayFrequency" id="occurOnDayFrequency" {...monthlyByOccurencesOrdinal.inputProps}>
-                                <option value="first">First</option> 
-                                <option value="second">Second</option>
-                                <option value="third">Third</option> 
-                                <option value="fourth">Fourth</option>
-                                <option value="Last">Last</option> 
+                                <option value="1">First</option> 
+                                <option value="2">Second</option>
+                                <option value="3">Third</option> 
+                                <option value="4">Fourth</option>
+                                <option value="last">Last</option> 
                             </select> 
                             <select name="occurOnDay" id="occurOnDay" {...monthlyByOccurencesDay.inputProps}>
                                 <option value="sunday">Sunday</option>
@@ -208,17 +208,23 @@ const EventForm = ({
 
                 <div>End date
                   <div>
-                    <input type="radio" name="endDate" id="by" onClick={() => handleEndType('by')}/>
-                    <label htmlFor="by">By <input {...endByDate.inputProps}/></label>
+                    <input type="radio" name="endDate" id="untilEndDate" onClick={() => handleEndType('untilEndDate')}/>
+                    <label htmlFor="untilEndDate">By <input {...endByDate.inputProps}/></label>
                   </div>
                   <div>
-                    <input type="radio" name="endDate" id="after" onClick={() => handleEndType('after')}/>
-                    <label htmlFor="after">After 
-                        <select name="afterOccurences" id="afterOccurences" {...endByOccurences.inputProps}>
+                    <input type="radio" name="endDate" id="byOccurrences" onClick={() => handleEndType('byOccurrences')}/>
+                    <label htmlFor="byOccurrences">After 
+                        <select name="byOccurrences" id="byOccurrences" {...endByOccurrences.inputProps}>
                           <option value="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
-                        </select> Occurences</label>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                        </select> Occurrences</label>
                   </div> 
                 </div>
 

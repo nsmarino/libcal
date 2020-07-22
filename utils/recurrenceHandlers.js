@@ -32,6 +32,7 @@ const dailyRecurrence = (event) => {
       addDateAndIncrementSpacer()
     }  
   }
+  
   if (event.endType==='untilEndDate') {
     const endDate = moment(event.endDate)
     while (!spacer.isAfter(endDate)) {

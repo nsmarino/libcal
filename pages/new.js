@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import moment from 'moment'
 
 import EventForm from '../components/EventForm'
 
@@ -29,19 +30,19 @@ export default function New() {
 
   // WEEKLY RECURRENCE
   const weeklyRepeat = useHTMLSelect('1')
-  const [weeklyDays, setWeeklyDays] = useState({}) // will need to write function for setting weeklyDays based on which days are checked
+  const [weeklyDays, setWeeklyDays] = useState({})
   
   // MONTHLY RECURRENCE
   const monthlyRepeat = useHTMLSelect('1')
   const [monthlyRecurrenceType, setMonthlyRecurrenceType] = useState('') // radio
 
-  const monthlyByDate = useHTMLSelect('')
-  const monthlyByOccurencesOrdinal = useHTMLSelect('')
-  const monthlyByOccurencesDay = useHTMLSelect('')
+  const monthlyByDate = useHTMLSelect('') // what is this?
+  const monthlyNthWeekdayOrdinal = useHTMLSelect('')
+  const monthlyNthWeekdayDay = useHTMLSelect('')
 
   const [endType, setEndType] = useState('') // radio
   const endByDate = useField('date') // effect hook to calculate default date whenever recurrenceType changes?
-  const endByOccurences = useHTMLSelect('')
+  const endByOccurrences = useHTMLSelect('1')
 
   const maxParticipants = useField('number', 10)
   const priorityCarmel = useBoolean(false)
@@ -49,52 +50,282 @@ export default function New() {
    ///////////////////////
    // FUNCTION JUNCTION //
    ///////////////////////
-  
   const resetForm = () => console.log('reset state of all hooks to default')
 
-  const handleDailyRecurrence = (date) => {
-    console.log(date)
-    console.log("how many days to repeat:",dailyRepeat.inputProps.value)
-    console.log("end:",endType)
-    console.log("by date,",endByDate.inputProps.value,"by occurences",endByOccurences.inputProps.value)
-    
-    if (endType==="by") {
-      console.log('youve chosen to end by a certain date')
+  const getDatesArray = () => {
+    if (!eventRecurring.value) {
+      return [eventDate.inputProps.value]
     }
-    if (endType==="after") {
-      console.log('youve chose to end after a set number of occurences')
-      for (let i=0;i<endByOccurences.inputProps.value;i++) {
-          console.log(i)
+    // helpers for recurrenceHandler
+    const getCheckedDaysAsArrayOfIntegers = () => {
+      const onTheseDays = []
+
+      const daysAsIntegers = {
+        sunday: 0,
+        monday: 1,
+        tuesday: 2,
+        wednesday: 3,
+        thursday: 4,
+        friday: 5,
+        saturday: 6,  
       }
+
+      for (const [key, value] of Object.entries(weeklyDays)) {
+        if (value) onTheseDays.push(daysAsIntegers[key])
+      }  
+      return onTheseDays          
     }
-  }
+    const nthWeekdayInMonth = (n, weekday, moment) => { // EX: (1, 'Sunday', moment('2020-06-01')) => return date of first sunday in june 2020
+      const allWeekdaysInMonth = [] // will be array of all instances of weekday in that month
+      const day = moment.startOf('month').day(weekday)
 
-  const processDates = () => {
+      if (day.date() > 7) day.add(7,'d') // tests to ensure you dont have a day from prev month
+      const month = day.month()
+      while (month === day.month()) {
+        const weekdayInMonth = day.clone()
+        allWeekdaysInMonth.push(weekdayInMonth)
+        day.add(7,'d')
+      }
+      const index = n==='last' ? allWeekdaysInMonth.length-1 : n-1
+      return allWeekdaysInMonth[index]
+    } 
+    const recurrenceHandler = {
+      daily: {
+        byOccurrences: () => {
+          const event = {
+            start: eventDate.inputProps.value, // string in format 'YYYY-MM-DD'
+            occurrences: parseInt(endByOccurrences.inputProps.value,10), // 8
+            interval: parseInt(dailyRepeat.inputProps.value,10)   // 2
+          }
+          const dates = []
+          const startDate = moment(event.start)
+          const spacer = startDate.clone()
 
-    if (!eventRecurring) return [initialDate]
+          for (let i=0; i<event.occurrences; i++) {
+            const date = spacer.clone()
+            const dateObj = {
+              day: date.date(),
+              month: date.month(),
+              year: date.year(),
+            }
+            dates.push(dateObj)
+            spacer.add(event.interval,'day')
+          }
+          return dates  
+        },
+        untilEndDate: () => {
+          const event = {
+            start: eventDate.inputProps.value,
+            endDate: endByDate.inputProps.value,
+            interval: parseInt(dailyRepeat.inputProps.value,10),
+          }
 
-    // input for recurrence handler must have 
-    if (recurrenceType==="daily") { 
-      return handleDailyRecurrence(initialDate)
+          const dates = []
+          const startDate = moment(event.start)
+          const spacer = startDate.clone()
+        
+          const endDate = moment(event.endDate)
+          while (!spacer.isAfter(endDate)) {
+            const date = spacer.clone()
+            const dateObj = {
+              day: date.date(),
+              month: date.month(),
+              year: date.year(),
+            }
+            dates.push(dateObj)
+            spacer.add(event.interval,'day')
+          } 
+          return dates  
+        },
+      },
+      weekly: {
+        byOccurrences: () => {
+          const event = {
+            start: eventDate.inputProps.value, // 'YYYY-MM-DD'
+            occurrences: parseInt(endByOccurrences.inputProps.value,10), // 8
+            interval: parseInt(weeklyRepeat.inputProps.value,10),   // 2
+            onTheseDays: getCheckedDaysAsArrayOfIntegers() // [1,3,5],
+          }
+          const dates = []
+          const startDate = moment(event.start)
+          const spacer = startDate.clone().day(0)
+
+          let i=0; 
+          while (i < event.occurrences) {
+            for (let day of event.onTheseDays) {
+              const date = spacer.clone().day(day)
+              if ((date.isSame(startDate) || date.isAfter(startDate)) && i < event.occurrences) {
+                const dateObj = {
+                  day: date.date(),
+                  month: date.month(),
+                  year: date.year(),
+                }
+                dates.push(dateObj)
+                i++
+              }
+            }
+            spacer.add(event.interval,'week')
+          } 
+          return dates  
+        },
+        untilEndDate: () => {
+          const event = {
+            start: eventDate.inputProps.value, // 'YYYY-MM-DD'
+            endDate: endByDate.inputProps.value,
+            interval: parseInt(weeklyRepeat.inputProps.value,10),   // 2
+            onTheseDays: getCheckedDaysAsArrayOfIntegers() // [1,3,5],
+          }
+          const dates = []
+          const startDate = moment(event.start)
+          const spacer = startDate.clone().day(0)
+          const endDate = moment(event.endDate)
+
+          while (!spacer.isAfter(endDate)) {
+            for (let day of event.onTheseDays) {
+              const date = spacer.clone().day(day) // for example spacer.clone().day(0) returns the Sunday of that week
+              if ((date.isSame(startDate) || date.isAfter(startDate)) && !date.isAfter(endDate)) {
+                const dateObj = {
+                  day: date.date(),
+                  month: date.month(),
+                  year: date.year(),
+                }
+                dates.push(dateObj)
+              }
+            }
+            spacer.add(event.interval,'week')
+          }
+          return dates
+        },
+      },
+      monthly: {
+        date: {
+          byOccurrences: () => {
+            const event = {
+              start: eventDate.inputProps.value, // 'YYYY-MM-DD'
+              occurrences: parseInt(endByOccurrences.inputProps.value,10), // 8
+              interval: parseInt(monthlyRepeat.inputProps.value,10),   // 2
+              patternDate: parseInt(monthlyByOccurencesOrdinal.inputProps.value,10) // 15,
+            }
+            const dates = []
+            const startDate = moment(event.start)
+            const spacer = startDate.clone().startOf('month')
+
+            let i=0; 
+            while (i < event.occurrences) {
+              const date = spacer.clone().date(event.patternDate)
+              if ((date.isSame(startDate) || date.isAfter(startDate)) && i < event.occurrences) {
+                const dateObj = {
+                  day: date.date(),
+                  month: date.month(),
+                  year: date.year(),
+                }
+                dates.push(dateObj)
+                i++
+              }
+              spacer.add(event.interval,'month')
+            } 
+            return dates 
+          },
+
+          untilEndDate: () => {
+            const event = {
+              start: eventDate.inputProps.value, // 'YYYY-MM-DD'
+              endDate: endByDate.inputProps.value, // 'YYYY-MM-DD'
+              interval: parseInt(monthlyRepeat.inputProps.value,10),   // 2
+              patternDate: parseInt(monthlyByOccurencesOrdinal.inputProps.value,10) // 15,
+            }
+            const dates = []
+            const startDate = moment(event.start)
+            const spacer = startDate.clone().startOf('month')
+
+            const endDate = moment(event.endDate)
+            while (!spacer.isAfter(endDate)) {
+              const date = spacer.clone().date(event.patternDate)
+              if ((date.isSame(startDate) || date.isAfter(startDate)) && !date.isAfter(endDate)) {
+                const dateObj = {
+                  day: date.date(),
+                  month: date.month(),
+                  year: date.year(),
+                }
+                dates.push(dateObj)
+              }
+              spacer.add(event.interval,'month')
+            }      
+            return dates   
+          },
+        },
+        day: {  // Next -- will need to bring in helper function (already written)
+          byOccurrences: () => {
+            const event = {
+              start: eventDate.inputProps.value, // string in format 'YYYY-MM-DD'
+              occurrences: parseInt(endByOccurrences.inputProps.value,10), // 8
+              patternWhich: monthlyNthWeekdayOrdinal.inputProps.value,
+              patternDay: monthlyNthWeekdayDay.inputProps.value,
+              interval: parseInt(monthlyRepeat.inputProps.value,10),   // 2
+            }
+            const dates = []
+            const startDate = moment(event.start)
+            const spacer = startDate.clone().startOf('month')
+
+            let i=0; 
+            while (i < event.occurrences) {
+              const date = nthWeekdayInMonth(event.patternWhich, event.patternDay, spacer.clone()) 
+              if ((date.isSame(startDate) || date.isAfter(startDate)) && i < event.occurrences) {
+                const dateObj = {
+                  day: date.date(),
+                  month: date.month(),
+                  year: date.year(),
+                }
+                dates.push(dateObj)
+                i++
+              }
+              spacer.add(event.interval,'month')
+            }  
+            return dates
+          },
+          untilEndDate: () => {
+            const event = {
+              start: eventDate.inputProps.value, // string in format 'YYYY-MM-DD'
+              endDate: endByDate.inputProps.value, // 'YYYY-MM-DD'
+              interval: parseInt(monthlyRepeat.inputProps.value,10),   // 2
+              patternWhich: monthlyNthWeekdayOrdinal.inputProps.value,
+              patternDay: monthlyNthWeekdayDay.inputProps.value,
+            }
+            const dates = []
+            const startDate = moment(event.start)
+            const spacer = startDate.clone().startOf('month')
+
+            const endDate = moment(event.endDate)
+            while (!spacer.isAfter(endDate)) {
+              const date = nthWeekdayInMonth(event.patternWhich, event.patternDay, spacer.clone()) 
+              if ((date.isSame(startDate) || date.isAfter(startDate)) && !date.isAfter(endDate)) {
+                const dateObj = {
+                  day: date.date(),
+                  month: date.month(),
+                  year: date.year(),
+                }
+                dates.push(dateObj)
+              }
+              spacer.add(event.interval,'month')
+            }  
+            return dates
+          },
+        }  
+      },
+    } 
+    if (recurrenceType==='daily'||recurrenceType==='weekly') {
+      return recurrenceHandler[recurrenceType][endType]()
+
+    } else if (recurrenceType==='monthly') {
+      return recurrenceHandler[recurrenceType][monthlyRecurrenceType][endType]()
     }
-    // if (recurrenceType==="weekly") handleWeeklyRecurrence()
-    // if (recurrenceType==="monthly") handleMonthlyRecurrence()
-    
-    // This will need to be done as a .map() on the array returned from the recurrence handler
-    // const initialDate = {
-    //   day: parseInt(eventDate.inputProps.value.substring(8), 10),
-    //   month: parseInt(eventDate.inputProps.value.substring(5,7),10),
-    //   year: parseInt(eventDate.inputProps.value.substring(0,4),10),
-    // }
-
-
-    return [initialDate]
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
         
-    const dates = processDates()
+    const dates = getDatesArray()
+
     const newEvent = {
         name: eventName.inputProps.value,
         description: eventDescription.inputProps.value,
@@ -151,13 +382,13 @@ export default function New() {
           monthlyRepeat={monthlyRepeat}
           handleMonthlyRecurrence={setMonthlyRecurrenceType}
           monthlyByDate={monthlyByDate}
-          monthlyByOccurencesOrdinal={monthlyByOccurencesOrdinal}
-          monthlyByOccurencesDay={monthlyByOccurencesDay}
+          monthlyByOccurencesOrdinal={monthlyNthWeekdayOrdinal}
+          monthlyByOccurencesDay={monthlyNthWeekdayDay}
 
           // endDate
           handleEndType={setEndType}
           endByDate={endByDate}
-          endByOccurences={endByOccurences}
+          endByOccurrences={endByOccurrences}
 
           // other
           maxParticipants={maxParticipants}
