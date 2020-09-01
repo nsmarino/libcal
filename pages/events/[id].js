@@ -21,6 +21,11 @@ export default function EventPage({ event }) {
                 <button>back</button>
               </a>
             </Link>
+            <Link href="/events/admin/[id]" as={`/events/admin/${event.id}`}>
+              <a>            
+                <button>ADMIN</button>
+              </a>
+            </Link>
         </div>
     )
 }

@@ -24,10 +24,10 @@ export default async function handler(req, res) {
 
     case 'PUT' /* Edit a model by its ID */:
       try {
-        console.log('request body', req.body)
+        console.log('PUT request', req.body)
         const event = await Event.findByIdAndUpdate(id, req.body, {
           new: true,
-        //   runValidators: true,
+          runValidators: true,
         })
         console.log('updated event on server side', event)
         if (!event) {
@@ -35,6 +35,7 @@ export default async function handler(req, res) {
         }
         res.status(200).json({ success: true, data: event })
       } catch (error) {
+        console.log(error)
         res.status(400).json({ success: false })
       }
       break

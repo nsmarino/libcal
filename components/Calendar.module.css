@@ -1,14 +1,37 @@
 .calContainer {
     display: flex;
     flex-wrap: wrap;
+    min-width: 50vw;
     justify-content: left;
-    border: 1px solid maroon;
+    border: 1px solid black;
+}
+
+.dayLabels {
+    display: flex;
+}
+
+.dayLabels div {
+    text-align: center;
+    width: calc((100% / 7) - 1%);
+    margin: 0.5%;
+
 }
 
 .day {
-    border: 1px solid maroon;
-    width: 6rem;
-    height: 6rem;
+    border: 1px solid black;
+    width: calc((100% / 7) - 1%);
+    margin: 0.5%;
+    min-height: 6rem;
+    border-radius: 5%;
+    /* box-shadow: 4px 2px 2px black; */
+}
+
+.placeholder {
+    border: 1px solid grey;
+    width: calc((100% / 7) - 1%);
+    margin: 0.5%;
+    min-height: 6rem;
+    border-radius: 5%;
 }
 
 .day:hover {

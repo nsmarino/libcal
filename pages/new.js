@@ -36,7 +36,7 @@ export default function New() {
   const monthlyRepeat = useHTMLSelect('1')
   const [monthlyRecurrenceType, setMonthlyRecurrenceType] = useState('') // radio
 
-  const monthlyByDate = useHTMLSelect('') // what is this?
+  const monthlyByDate = useHTMLSelect('')
   const monthlyNthWeekdayOrdinal = useHTMLSelect('')
   const monthlyNthWeekdayDay = useHTMLSelect('')
 
@@ -46,15 +46,26 @@ export default function New() {
 
   const maxParticipants = useField('number', 10)
   const priorityCarmel = useBoolean(false)
+  const regRequired = useBoolean(false)
 
    ///////////////////////
    // FUNCTION JUNCTION //
    ///////////////////////
-  const resetForm = () => console.log('reset state of all hooks to default')
+  const resetForm = () => {
+    eventName.reset()
+    eventDescription.reset()
+    eventDate.reset()
+    eventTime.reset()
+  }
 
   const getDatesArray = () => {
     if (!eventRecurring.value) {
-      return [eventDate.inputProps.value]
+      const nonRecurringEvent = {
+        day: parseInt(eventDate.inputProps.value.substring(8),10),
+        month: parseInt(eventDate.inputProps.value.substring(5,7),10)-1,
+        year: parseInt(eventDate.inputProps.value.substring(0,4),10),
+      }
+      return [nonRecurringEvent]
     }
     // helpers for recurrenceHandler
     const getCheckedDaysAsArrayOfIntegers = () => {
@@ -204,7 +215,7 @@ export default function New() {
               start: eventDate.inputProps.value, // 'YYYY-MM-DD'
               occurrences: parseInt(endByOccurrences.inputProps.value,10), // 8
               interval: parseInt(monthlyRepeat.inputProps.value,10),   // 2
-              patternDate: parseInt(monthlyByOccurencesOrdinal.inputProps.value,10) // 15,
+              patternDate: parseInt(monthlyByDate.inputProps.value,10) // 15,
             }
             const dates = []
             const startDate = moment(event.start)
@@ -232,7 +243,7 @@ export default function New() {
               start: eventDate.inputProps.value, // 'YYYY-MM-DD'
               endDate: endByDate.inputProps.value, // 'YYYY-MM-DD'
               interval: parseInt(monthlyRepeat.inputProps.value,10),   // 2
-              patternDate: parseInt(monthlyByOccurencesOrdinal.inputProps.value,10) // 15,
+              patternDate: parseInt(monthlyByDate.inputProps.value,10) // 15,
             }
             const dates = []
             const startDate = moment(event.start)
@@ -254,7 +265,7 @@ export default function New() {
             return dates   
           },
         },
-        day: {  // Next -- will need to bring in helper function (already written)
+        day: {
           byOccurrences: () => {
             const event = {
               start: eventDate.inputProps.value, // string in format 'YYYY-MM-DD'
@@ -331,22 +342,19 @@ export default function New() {
         description: eventDescription.inputProps.value,
         dates,
         time: eventTime.inputProps.value,
-        duration: `${eventDurationHr.inputProps.value} hr, ${eventDurationMin.inputProps.value} min`,
+        duration: `${eventDurationHr.inputProps.value} hr, ${eventDurationMin.inputProps.value} min`, // use momentjs function ?
         registered: [],
         maxParticipants: parseInt(maxParticipants.inputProps.value,10),
         priorityCarmel: priorityCarmel.value,
+        regRequired: regRequired.value,
     }
 
     console.log(newEvent)
-
-        // // POST REQUEST TO 'API/EVENTS'
-        // addEvent(newEvent)
-        //   .then(newEvent=>console.log(newEvent))
-
-        // eventName.reset()
-        // eventDescription.reset()
-        // eventDate.reset()
-        // eventTime.reset()
+    
+// POST REQUEST TO 'API/EVENTS'...
+  addEvent(newEvent)
+    .then(savedEvent=>console.log(savedEvent))
+  resetForm()
   }
 
   return (
@@ -393,6 +401,7 @@ export default function New() {
           // other
           maxParticipants={maxParticipants}
           priorityCarmel={priorityCarmel}
+          regRequired={regRequired}
 
           handleSubmit={handleSubmit}
         />

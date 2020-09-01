@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const PatronSchema = new mongoose.Schema({
+export const PatronSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: true,
@@ -27,32 +27,8 @@ const PatronSchema = new mongoose.Schema({
   },
 })
 
-const dateSchema = new mongoose.Schema({
-  day: Number,
-  month: Number,
-  year: Number,
-})
-const EventSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  dates: {
-    type: [dateSchema],
-    required: true,
-  },
-  time: {
-    type: String,
-    required: true,
-  },
-  registered: [PatronSchema],
-})
 
-EventSchema.set('toJSON', {
+PatronSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
@@ -60,4 +36,4 @@ EventSchema.set('toJSON', {
   }
 })
 
-module.exports = mongoose.models.Event || mongoose.model('Event', EventSchema)
+export default mongoose.models.Patron || mongoose.model('Patron', PatronSchema)

@@ -35,6 +35,11 @@ export const addEvent = async (data) => {
     return eventData
 }
 
+
+
+
+
+
 // NOT TESTED YET - WILL BE USED FOR REGISTERING
 export const updateEvent = async (id, data) => {
 

@@ -1,17 +1,15 @@
 // FRAMEWORK:
 import Head from 'next/head'
+import Link from 'next/link'
 
 // COMPONENTS:
 import Calendar from '../components/Calendar'
-import EventForm from '../components/EventForm'
 
 // API SERVICE:
-import { addEvent, getEventsByMonth } from '../services/eventService'
+import { getEventsByMonth } from '../services/eventService'
 
 // HOOKS:
 import { useState } from 'react'
-import { useField } from '../hooks/index'
-// custom useMonth hook possible???
 
 const monthArr = [
   'January',
@@ -60,21 +58,6 @@ export default function Home({ monthData, eventData }) {
   const [month, setMonth] = useState(monthData)
   const [events, setEvents] = useState(eventData)
   
-  // custom hook for form handling:
-  // const eventName = useField('text')
-  // const eventDescription = useField('textarea')
-  // const eventDate = useField('date', new Date().toISOString().substring(0, 10))
-  // const eventTime = useField('time', '12:00')
-
-  // const eventDurationHr = '' // select
-  // const eventDurationMin = '' // select
-  // // DAILY RECURRENCE
-  // const dailyRepeat = '' // select
-  // const dailyEndDate
-
-  // const maxParticipants
-  // functions for buttons. updates month and
-  // sends POST request to get events for month.
   const backToCurrentMonth = async () => {
     const currentMonth = getCurrentMonth()
     setMonth(currentMonth)
@@ -112,16 +95,12 @@ export default function Home({ monthData, eventData }) {
         <button onClick={getPreviousMonth}>previous</button>
         <button onClick={backToCurrentMonth}>current month</button>
         <button onClick={getNextMonth}>next</button>
-
+        <Link href="/new">
+          <a>
+            <button>CREATE NEW EVENT</button>
+          </a>
+        </Link>
         <Calendar month={month} eventData={events} />
-        
-        {/* <EventForm 
-          name={eventName}
-          description={eventDescription}
-          date={eventDate}
-          time={eventTime}
-          handleSubmit={handleSubmit}
-        /> */}
 
       </main>
     </div>
@@ -134,9 +113,8 @@ export async function getServerSideProps() {
   return { props: { monthData, eventData } }
 }
 
-// ROADMAP:
-
-// 1. each time the month changes, fetch events for that month [✓ 7/11/20]
-// 2. refine event object and creation form
-// 3. add admin login - needed for creation form
-// 4. email to registered patrons
+// validation at event creation; validation when registering patrons [✓ 7/11/20]
+// error handling
+// admin panel page where you can view/edit registrants and edit event
+// admin login
+// email service

@@ -1,12 +1,11 @@
 import Link from 'next/link'
 
 import style from './calendar.module.css'
+import idGenerator from '../utils/idGenerator'
+
 
 const Calendar = ({ eventData, month }) => {
   if (!month) return null
-
-  // this is presentational so it belongs in this component
-  const lastDaysOfPreviousMonth = () => console.log('last days of previous month')
 
   // places events on calendar
   const findEvents = (day) => {
@@ -24,11 +23,17 @@ const Calendar = ({ eventData, month }) => {
   // creates div for each day of month
   const displayMonth = () => {
       const days = []
+
       for (let i=0; i<month.length; i++) {
           days.push(i+1)
       }
+
+      for (let i=0; i<month.startsOn; i++) {
+        days.unshift('')
+      }
+
       return days.map(day => 
-        <div className={style.day} key={day}>
+        <div className={day==='' ? style.placeholder : style.day} key={idGenerator()}>
           <p>{day}</p>
           {findEvents(day)}
         </div>
@@ -37,7 +42,16 @@ const Calendar = ({ eventData, month }) => {
 
   return (
   <>
-  <h2>{month.name} {month.year}</h2>
+  <h2 style={{textAlign: 'center'}}>{month.name} {month.year}</h2>
+  <div className={style.dayLabels}>
+    <div>Sun</div>
+    <div>Mon</div>
+    <div>Tues</div>
+    <div>Wed</div>
+    <div>Thurs</div>
+    <div>Fri</div>
+    <div>Sat</div>
+  </div>
   <div className={style.calContainer}>
       {displayMonth()}
   </div>

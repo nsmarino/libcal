@@ -17,7 +17,7 @@ export default async function eventsHandler(req, res) {
         // console.log(month, year)
         const eventsByMonth = await Event.find(
             { 'dates.month': month, 'dates.year': year }) /* find all the data in our database */
-        res.status(200).json({ success: true, data: eventsByMonth })
+            res.status(200).json({ success: true, data: eventsByMonth })
     } catch (error) {
         res.status(400).json({ success: false })
       }

@@ -8,6 +8,7 @@ export default async function eventsHandler(req, res) {
     case 'GET':
       try {
         const events = await Event.find({}) /* find all the data in our database */
+        console.log(events)
         res.status(200).json({ success: true, data: events })
       } catch (error) {
         res.status(400).json({ success: false })
@@ -21,6 +22,7 @@ export default async function eventsHandler(req, res) {
         ) /* create a new model in the database */
         res.status(201).json({ success: true, data: event })
       } catch (error) {
+        console.log(error)
         res.status(400).json({ success: false })
       }
       break

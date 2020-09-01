@@ -68,6 +68,7 @@ const EventForm = ({
 
   maxParticipants,
   priorityCarmel,
+  regRequired,
   handleSubmit }) => {
 
     return (
@@ -174,7 +175,7 @@ const EventForm = ({
                         <div>
                             <input type="radio" name="monthlyOccur" id="date"  onClick={() => handleMonthlyRecurrence('date')} />
                             <label htmlFor="date">Day
-                                <select name="occurOnDate" id="occurOnDate" {...monthlyByOccurencesOrdinal.inputProps}>
+                                <select name="occurOnDate" id="occurOnDate" {...monthlyByDate.inputProps}>
                                   <option value="1">1</option>
                                   <option value="2">2</option>
                                   <option value="3">3</option>
@@ -236,6 +237,16 @@ const EventForm = ({
                 <p>
                 Max participants: <input {...maxParticipants.inputProps}/>
                 </p>
+
+                <p>
+                <input 
+                  type="checkbox" 
+                  name="regRequired" 
+                  id="regRequired"
+                  onClick={regRequired.toggle}
+                /> Registration required
+                </p>
+
                 <p>
                 <input 
                   type="checkbox" 
@@ -244,6 +255,7 @@ const EventForm = ({
                   onClick={priorityCarmel.toggle}
                 /> Prioritize Carmel residents
                 </p>
+ 
                 <p>...Other required fields for registration -- library card, email, address? etc</p>
                 <button>submit</button>
             </form>
