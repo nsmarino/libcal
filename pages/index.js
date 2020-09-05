@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 // COMPONENTS:
 import Calendar from '../components/Calendar'
+import Layout from '../components/Layout'
 
 // API SERVICE:
 import { getEventsByMonth } from '../services/eventService'
@@ -82,15 +83,8 @@ export default function Home({ monthData, eventData }) {
   }
 
   return (
-    <div className="container">
-      <Head>
-        <title>reed library | events</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-    <header>
-      <h1>event calendar</h1>
-      <p></p>
-    </header>
+  <div className="container">
+    <Layout>
       <main>
         <button onClick={getPreviousMonth}>previous</button>
         <button onClick={backToCurrentMonth}>current month</button>
@@ -106,6 +100,7 @@ export default function Home({ monthData, eventData }) {
         <Calendar month={month} eventData={events} />
 
       </main>
+      </Layout>
     </div>
   )
 }
