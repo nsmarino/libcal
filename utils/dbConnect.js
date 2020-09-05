@@ -8,14 +8,14 @@ async function dbConnect() {
   if (connection.isConnected) {
     return
   }
-
   /* connecting to our database */
   const db = await mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
-  }, () => console.log('connected to mongoDB'))
-
+  })
+  
+  console.log('db',db.connections[0].readyState)
   connection.isConnected = db.connections[0].readyState
 }
 

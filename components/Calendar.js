@@ -14,9 +14,13 @@ const Calendar = ({ eventData, month }) => {
         date.day === day)
       )
     return daysEvents.length === 0 ? null : daysEvents.map(event =>
-       <Link href="/events/[id]" as={`/events/${event.id}`} key={event.id}>
-        <a>{event.name}</a>
-      </Link>
+        <Link href="/events/[id]" as={`/events/${event.id}`} key={event.id}>
+        
+        <a className={style.eventLink}><p className={style.eventName}>
+{event.name}
+</p></a>
+        </Link>
+ 
       )
   }
 
@@ -35,7 +39,9 @@ const Calendar = ({ eventData, month }) => {
       return days.map(day => 
         <div className={day==='' ? style.placeholder : style.day} key={idGenerator()}>
           <p>{day}</p>
+          <div>
           {findEvents(day)}
+          </div>
         </div>
       )
   }

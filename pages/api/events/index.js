@@ -1,4 +1,5 @@
 import dbConnect from '../../../utils/dbConnect'
+import errorHandler from '../../../utils/errorHandler'
 import Event from '../../../models/Event'
 
 export default async function eventsHandler(req, res) {
@@ -14,16 +15,15 @@ export default async function eventsHandler(req, res) {
         res.status(400).json({ success: false })
       }
       break
-    case 'POST':
+    case 'POST': // Add new event.
       try {
         console.log('on server side', req.body)
         const event = await Event.create(
           req.body
-        ) /* create a new model in the database */
+        )
         res.status(201).json({ success: true, data: event })
       } catch (error) {
-        console.log(error)
-        res.status(400).json({ success: false })
+        errorHandler(error, req, res)
       }
       break
     default:
@@ -31,3 +31,20 @@ export default async function eventsHandler(req, res) {
       break
   }
 }
+
+// const errorHandler = (error, request, response) => {
+//   console.log('error handler', error.name)
+//   if (error.name === 'CastError' && error.kind === 'ObjectId') {
+//     return response.status(400).send({ error: 'malformatted id' 
+//     })
+//   } else if (error.name === 'ValidationError') {
+//     return response.status(400).json({ error: error.message 
+//     })
+//   } else if (error.name === 'JsonWebTokenError') {
+//     return response.status(401).json({
+//       error: 'invalid token'
+//     })
+//   } else {
+//     response.status(400).json({ success: false })
+//   }
+// }

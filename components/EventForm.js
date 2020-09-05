@@ -264,11 +264,3 @@ const EventForm = ({
 }
 
 export default EventForm
-
-// Add Event form
-// // Options inside of radio buttons (done)
-// // Break into components?
-// // Show appropriate recurrence options (done)
-// // Console log submit
-// // Generate dates array from recurrence options
-// // Connect to database

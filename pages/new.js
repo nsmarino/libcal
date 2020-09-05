@@ -1,19 +1,24 @@
+import { useState } from 'react'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+
 import moment from 'moment'
 
 import EventForm from '../components/EventForm'
-
 import { addEvent } from '../services/eventService'
+import { 
+  useField, 
+  useHTMLSelect, 
+  useBoolean } from '../hooks/index'
 
-import { useState } from 'react'
-import { useField, useHTMLSelect, useBoolean } from '../hooks/index'
 
 export default function New() {
+  const router = useRouter()
 
   ///////////////
   // HOOK CITY //
   ///////////////
-
+  const [errorMessage, setErrorMessage] = useState('')
   const eventName = useField('text')
   const eventDescription = useField('textarea')
   const eventDate = useField('date', new Date().toISOString().substring(0, 10))
@@ -347,14 +352,24 @@ export default function New() {
         maxParticipants: parseInt(maxParticipants.inputProps.value,10),
         priorityCarmel: priorityCarmel.value,
         regRequired: regRequired.value,
-    }
+    }    
+    // POST REQUEST TO 'API/EVENTS'...
+    addEvent(newEvent)
+      .then(savedEvent=>{
+        if (!savedEvent) {
+          setErrorMessage(
+            `Unable to add event. Please ensure all required information is included.`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        } else {
+          console.log(savedEvent)
+          router.push(`/events/[id]`, `/events/${savedEvent.id}`)
+        }
+      })
 
-    console.log(newEvent)
-    
-// POST REQUEST TO 'API/EVENTS'...
-  addEvent(newEvent)
-    .then(savedEvent=>console.log(savedEvent))
-  resetForm()
+    resetForm()
   }
 
   return (
@@ -363,7 +378,7 @@ export default function New() {
       <title>reed library | events</title>
       <link rel="icon" href="/favicon.ico" />
     </Head>
-
+    <div>{errorMessage}</div>
     <EventForm 
           // basic event details
           name={eventName}

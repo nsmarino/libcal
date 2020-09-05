@@ -95,11 +95,14 @@ export default function Home({ monthData, eventData }) {
         <button onClick={getPreviousMonth}>previous</button>
         <button onClick={backToCurrentMonth}>current month</button>
         <button onClick={getNextMonth}>next</button>
+        <div>
         <Link href="/new">
           <a>
             <button>CREATE NEW EVENT</button>
           </a>
         </Link>
+        </div>
+
         <Calendar month={month} eventData={events} />
 
       </main>
@@ -113,8 +116,36 @@ export async function getServerSideProps() {
   return { props: { monthData, eventData } }
 }
 
-// validation at event creation; validation when registering patrons [✓ 7/11/20]
-// error handling
-// admin panel page where you can view/edit registrants and edit event
-// admin login
-// email service
+// server side validation of event and patron schemas [✓ 9/2/2020]
+// attempt to create event with insufficient info will trigger (crude) error notice on client side [✓ 9/3/2020]
+
+// Agile principles -- fully plan, code, and test part of system before moving on to next part.
+
+// Overall: create layout component with header and footer
+
+// Event creation page
+// -- Refactor into smaller components.
+// -- Consider using a context hook?
+// -- Use react form hooks
+// -- Client-side validation BEFORE sending to server
+// -- Feedback to user
+// -- Ability to re-load page with info of existing events so can make edits
+// -- Display date array and information as settings change
+
+// Main calendar page
+// -- Improve navigation buttons
+// -- Different options show for events if admin is logged in
+
+// Admin page for event
+// -- Model after zoom event page
+
+// Patron registration page
+// -- Ability to re-load page with info of existing registrant so can make edits
+// -- Use react form hooks
+// -- Client-side validation BEFORE sending to server
+// -- Feedback to user
+// -- Displays different
+
+// This is all needed before other features can be added. I need to improve
+// the way this app is written before adding further complexity.
+

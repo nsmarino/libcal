@@ -37,3 +37,13 @@
 .day:hover {
     background-color: lightgray;
 }
+
+.eventLink {
+    text-decoration: none;
+}
+.eventName {
+    background: green;
+    color: white;
+    text-align: center;
+    border-radius: 25%;
+}

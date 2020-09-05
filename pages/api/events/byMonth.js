@@ -1,6 +1,7 @@
 import dbConnect from '../../../utils/dbConnect'
 import Event from '../../../models/Event'
 
+// A post request with a month and year will return only the events for that month.
 export default async function eventsHandler(req, res) {
   const { method } = req
   await dbConnect()
@@ -10,11 +11,8 @@ export default async function eventsHandler(req, res) {
       break
     case 'POST':
       try {
-        // console.log('on server side', req.body)
-        // naming problem here?
         const month = req.body.number
         const year = req.body.year
-        // console.log(month, year)
         const eventsByMonth = await Event.find(
             { 'dates.month': month, 'dates.year': year }) /* find all the data in our database */
             res.status(200).json({ success: true, data: eventsByMonth })
