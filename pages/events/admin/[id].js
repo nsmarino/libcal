@@ -16,15 +16,8 @@ export default function AdminPage({ event }) {
   const router = useRouter()
 
   const removeRegistrant = (reg) => {
-    console.log(reg)
-    console.log(event)
     const updatedRegistrants = event.registered.filter(r => r._id !== reg._id)
-    // console.log(updatedRegistrants)
-
     const updatedEvent = {...event, registered: updatedRegistrants}
-
-    console.log(updatedEvent)
-
     updateEvent(event.id, updatedEvent)
       .then(returnedEvent => returnedEvent)
   }

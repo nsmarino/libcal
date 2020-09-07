@@ -26,7 +26,6 @@ export default function Registration({ event }) {
 
         const updatedEvent={...event, registered: event.registered.concat(patron)}
         const submittedEvent = await updateEvent(event.id, updatedEvent)
-        console.log(submittedEvent)
 
         patronFirstName.reset()
         patronLastName.reset()

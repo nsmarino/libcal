@@ -4,6 +4,15 @@ import EventForm from '../components/NewEventForm/EventForm'
 const TestPage = () => {
 
     const event = {
+      dates: [
+        {
+          dayOfWeek: 6,
+          day: 5,
+          month: 5,
+          year: 2020,
+        }
+      ],
+      formData: {
         title: 'foo',
         description: 'bar',
         startDate: '2020-09-05',
@@ -16,16 +25,9 @@ const TestPage = () => {
         endType: 'untilDate',
         endDate: '2020-09-10',
 
-        // recurrence: {
-        //   recurrenceType: 'daily',
-        //   interval: 3,
-        //   endType: 'by',
-        //   endDate: '2020-09-10',
-        // },
-
         classSize: 10,
         registrationRequired: false,
-        carmelOnly: false,
+        carmelOnly: false,}
     }
 
     return (

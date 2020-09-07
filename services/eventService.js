@@ -64,7 +64,7 @@ export const updateEvent = async (id, data) => {
       }
     )
     const resToJson = await res.json()
-    console.log(resToJson)
+    console.log('res to json',resToJson)
     const eventData = resToJson.data
     return eventData
 }

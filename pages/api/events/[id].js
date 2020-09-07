@@ -24,12 +24,10 @@ export default async function handler(req, res) {
 
     case 'PUT' /* Edit a model by its ID */:
       try {
-        console.log('PUT request', req.body)
         const event = await Event.findByIdAndUpdate(id, req.body, {
           new: true,
           runValidators: true,
         })
-        console.log('updated event on server side', event)
         if (!event) {
           return res.status(400).json({ success: false })
         }

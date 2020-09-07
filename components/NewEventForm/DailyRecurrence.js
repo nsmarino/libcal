@@ -2,11 +2,9 @@ import { useState } from 'react'
 import moment from 'moment'
 
 import RangeSelect from './RangeSelect'
-import EndRadio from './EndRadio'
+import DateListItem from './DateListItem'
 
-const DailyRecurrence = ({ register, errors={errors}, getValues }) => {
-  const [dates, setDates] = useState([])
-  console.log(dates)
+const DailyRecurrence = ({ register, errors={errors}, getValues, setDates }) => {
 
   const getDates = (e) => {
     e.preventDefault()
@@ -26,6 +24,7 @@ const DailyRecurrence = ({ register, errors={errors}, getValues }) => {
         while (!spacer.isAfter(endDate)) {
           const date = spacer.clone()
           const dateObj = {
+            dayOfWeek: date.day(),
             day: date.date(),
             month: date.month(),
             year: date.year(),
@@ -50,6 +49,7 @@ const DailyRecurrence = ({ register, errors={errors}, getValues }) => {
         for (let i=0; i<event.occurrences; i++) {
           const date = spacer.clone()
           const dateObj = {
+            dayOfWeek: date.day(),
             day: date.date(),
             month: date.month(),
             year: date.year(),
@@ -64,18 +64,11 @@ const DailyRecurrence = ({ register, errors={errors}, getValues }) => {
         setDates([])
     }
   }
-
-  const displayDates = () => {
-    return dates.length
-  }
+  
   return (
   <div>
+    <button onClick={getDates}>GET DAILY DATES</button>
     <p>Repeat every <RangeSelect register={register} name='interval' min={1} max={14} /> days</p>
-    
-    <EndRadio register={register} errors={errors} />
-
-    <button onClick={getDates}>get dates</button>
-    <div>{displayDates()}</div> 
   </div>
   )
 }

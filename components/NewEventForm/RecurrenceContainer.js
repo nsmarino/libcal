@@ -1,37 +1,62 @@
-import { useEffect } from 'react'
+import EndRadio from './EndRadio'
 import DailyRecurrence from './DailyRecurrence'
+import WeeklyRecurrence from './WeeklyRecurrence'
+import MonthlyRecurrence from './MonthlyRecurrence'
+import OptionSelect from './OptionSelect'
 
-const RecurrenceContainer = ({register, errors, watch, getValues}) => {
-  
-
+const RecurrenceContainer = ({register, errors, watch, getValues, setDates }) => {
     const watchRecurrenceSelect = watch("recurrenceType", 'daily')
+    
+    const recurrenceOptions = [
+      {
+        value: 'daily',
+        displayText: 'Daily',
+      },
+      {
+        value: 'weekly',
+        displayText: 'Weekly',
+      },
+      {
+        value: 'monthly',
+        displayText: 'Monthly',
+      },
+    ]
+    
     return (
     <div>
-      <label>Recurrence pattern:
-
-      <select name="recurrenceType" ref={register({ required: true })}>
-        <option value="daily">Daily</option>
-        <option value="weekly">Weekly</option>
-        <option value="monthly">Monthly</option>
-      </select>
-
-      </label>
-
-      {errors.recurrenceSelect && <p>This field is required</p>}
+      <OptionSelect 
+        label="Recurrence pattern" 
+        name="recurrenceType"
+        options={recurrenceOptions}
+        register={register}
+      />
 
       {watchRecurrenceSelect==="daily" && (
         <DailyRecurrence 
           register={register} 
           errors={errors} 
           getValues={getValues}
+          setDates={setDates}
         />
       )}
       {watchRecurrenceSelect==="weekly" && (
-        <p>weekly</p>
+        <WeeklyRecurrence 
+          register={register} 
+          errors={errors} 
+          getValues={getValues}
+          setDates={setDates}
+        />
       )}
       {watchRecurrenceSelect==="monthly" && (
-        <p>monthly</p>
+        <MonthlyRecurrence 
+          register={register} 
+          errors={errors} 
+          getValues={getValues}
+          setDates={setDates}
+        />      
       )}
+
+      <EndRadio register={register} errors={errors} />
     </div>
     )
   }

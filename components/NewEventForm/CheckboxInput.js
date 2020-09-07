@@ -1,10 +1,10 @@
-const CheckboxInput = ({name, label, register, errors}) => {
+const CheckboxInput = ({name, label, register}) => {
     return (
     <div>
-      <label>{label}
+      <label>
         <input type="checkbox" name={name} ref={register} />
+        {label}
       </label>
-      {errors[name] && <p>This field is required</p>}
     </div>
     )
   }

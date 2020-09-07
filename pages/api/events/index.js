@@ -9,7 +9,6 @@ export default async function eventsHandler(req, res) {
     case 'GET':
       try {
         const events = await Event.find({}) /* find all the data in our database */
-        console.log(events)
         res.status(200).json({ success: true, data: events })
       } catch (error) {
         res.status(400).json({ success: false })
@@ -17,7 +16,6 @@ export default async function eventsHandler(req, res) {
       break
     case 'POST': // Add new event.
       try {
-        console.log('on server side', req.body)
         const event = await Event.create(
           req.body
         )

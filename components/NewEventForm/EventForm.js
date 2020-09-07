@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
 
 import TitleInput from './TitleInput'
@@ -8,25 +8,37 @@ import TimeInput from './TimeInput'
 import CheckboxInput from './CheckboxInput'
 import RecurrenceContainer from './RecurrenceContainer';
 import NumberInput from './NumberInput';
+import DateListItem from './DateListItem'
 
 const EventForm = ({event}) => {
-    const { register, handleSubmit, watch, errors, getValues, setValue } = useForm()
+  const [dates, setDates] = useState(event.dates || []) // Not sure about this.
+  const { register, handleSubmit, watch, errors, getValues, setValue } = useForm()
     
-    const watchRecurring = watch("recurring")
+  const watchRecurring = watch("recurring")
 
-    useEffect(() => {
-      if (event) {
-        for (const property in event) {
-          setValue(property, event[property])
-        }
-      }    
-    }, [watchRecurring])
+  useEffect(() => {
+    if (event) {
+      for (const property in event.formData) {
+        setValue(property, event.formData[property])
+      }
+    }    
+  }, [watchRecurring])
 
+  const displayDates = () => {
+    return dates.map(date => <DateListItem date={date} key={`${date.day}${date.month}${date.year}`}/>)
+  }
 
-    const onSubmit = (data) => console.log(data)
+  const onSubmit = (data) => {
+    const newEvent = {
+      dates,
+      formData: data,
+      registered: [],
+    }
+    console.log(newEvent)
+  }
 
-    return (
-      <form onSubmit={handleSubmit(onSubmit)}>
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
         <TitleInput register={register} errors={errors} />
         <DescriptionTextArea register={register} errors={errors} />
         <DateInput name="startDate" label="Date" register={register} errors={errors} required={true} />
@@ -35,7 +47,16 @@ const EventForm = ({event}) => {
         <CheckboxInput name="recurring" label="Recurring event" register={register} errors={errors} />
 
       {watchRecurring && (
-        <RecurrenceContainer register={register} errors={errors} watch={watch} getValues={getValues} />
+        <>
+        <RecurrenceContainer 
+          register={register} 
+          errors={errors} 
+          watch={watch} 
+          getValues={getValues} 
+          setDates={setDates}
+        />
+        <ul>{displayDates()}</ul> 
+        </>
       )}
 
         <NumberInput name="classSize" label="Max number of participants" register={register} errors={errors} />
