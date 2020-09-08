@@ -1,12 +1,36 @@
+import { useEffect } from 'react'
+
 import moment from 'moment'
 
 import RangeSelect from './RangeSelect'
 import MonthlyRadio from './MonthlyRadio'
 
-const MonthlyRecurrence = ({ register, errors, getValues, setDates }) => {
+const MonthlyRecurrence = ({ register, errors, getValues, setDates, watch }) => {
 
-  const getDates = (e) => {
-    e.preventDefault()
+  const watchEndType = watch("endType")
+  const watchMonthlyInterval = watch("weeklyInterval")
+  const watchMonthlyType = watch("monthlyType")
+  const watchNumberedDay = watch("numberedDay")
+  const watchOrdinalOfMonth = watch("ordinalOfMonth")
+  const watchOrdinalOfWeek = watch("ordinalOfWeek")
+  const watchEndDate = watch("endDate")
+  const watchEndAfter = watch("endAfter")
+
+  useEffect(() => {
+    getDates()
+  }, [
+    watchEndType, 
+    watchMonthlyInterval,
+    watchMonthlyType,
+    watchNumberedDay,
+    watchOrdinalOfMonth,
+    watchOrdinalOfWeek, 
+    watchEndDate, 
+    watchEndAfter
+  ])
+
+
+  const getDates = () => {
 
     const nthWeekdayInMonth = (n, weekday, moment) => { // EX: (1, 'Sunday', moment('2020-06-01')) => return date of first sunday in june 2020
       const allWeekdaysInMonth = [] // will be array of all instances of weekday in that month
@@ -147,7 +171,6 @@ const MonthlyRecurrence = ({ register, errors, getValues, setDates }) => {
 
   return (
   <div>
-  <button onClick={getDates}>get monthly dates</button>
     
     <p>Repeat every <RangeSelect register={register} name='monthlyInterval' min={1} max={3} /> months</p>
 

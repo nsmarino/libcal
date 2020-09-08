@@ -26,15 +26,7 @@ const monthArr = [
   'November',
   'December'
   ];
-const dayArr = [
-  'Sunday',
-  'Monday', 
-  'Tuesday', 
-  'Wednesday', 
-  'Thursday', 
-  'Friday', 
-  'Saturday', 
-]
+
 const getMonthObject = (month, year) => {
   const name = monthArr[month]
   const startsOn = new Date(year, month, 1).getDay()
@@ -90,7 +82,7 @@ export default function Home({ monthData, eventData }) {
         <button onClick={backToCurrentMonth}>current month</button>
         <button onClick={getNextMonth}>next</button>
         <div>
-        <Link href="/new">
+        <Link href="/test">
           <a>
             <button>CREATE NEW EVENT</button>
           </a>
@@ -107,7 +99,10 @@ export default function Home({ monthData, eventData }) {
 // This gets called on every request
 export async function getServerSideProps() {
   const monthData = getCurrentMonth()
+  console.log(monthData)
   const eventData = await getEventsByMonth(monthData)
+  console.log(eventData)
+
   return { props: { monthData, eventData } }
 }
 
@@ -116,16 +111,22 @@ export async function getServerSideProps() {
 
 // Agile principles -- fully plan, code, and test part of system before moving on to next part.
 
-// Overall: create layout component with header and footer
+// - delete all events currently stored in database
+// - update database model
+// - handle submit (when to process dates? effect hook for live reload?)
+// - Create -> Read -> Update -> Delete
+// CREATE: send from form to DB
+// READ: view on homepage
+// UPDATE: admin page can edit all parts of event object
+// DELETE: admin can delete event
+// then work on some CSS.
 
 // Event creation page
-// -- Refactor into smaller components.
-// -- Consider using a context hook?
 // -- Use react form hooks
 // -- Client-side validation BEFORE sending to server
 // -- Feedback to user
 // -- Ability to re-load page with info of existing events so can make edits
-// -- Display date array and information as settings change
+// -- Display date array and information as settings change (EFFECT HOOK!!!)
 
 // Main calendar page
 // -- Improve navigation buttons

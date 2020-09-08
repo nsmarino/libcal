@@ -1,7 +1,13 @@
+import { useEffect } from 'react'
+
 import DateInput from './DateInput'
 import RangeSelect from './RangeSelect'
 
 const EndRadio = ({ register, errors}) => {
+
+  useEffect(() => {
+    
+  }, [])
   return (
   <div>
   <h3>End date</h3>

@@ -1,13 +1,21 @@
-import { useState } from 'react'
+import { useEffect } from 'react'
 import moment from 'moment'
 
 import RangeSelect from './RangeSelect'
-import DateListItem from './DateListItem'
 
-const DailyRecurrence = ({ register, errors={errors}, getValues, setDates }) => {
+const DailyRecurrence = ({ register, errors={errors}, getValues, setDates, watch }) => {
+
+  const watchEndType = watch("endType")
+  const watchInterval = watch("interval")
+  const watchEndDate = watch("endDate")
+  const watchEndAfter = watch("endAfter")
+
+  useEffect(() => {
+    getDates()
+  }, [watchEndType, watchInterval, watchEndDate, watchEndAfter])
 
   const getDates = (e) => {
-    e.preventDefault()
+    if (e) e.preventDefault()
 
     switch(getValues('endType')) {
       case 'untilDate': {
@@ -67,7 +75,7 @@ const DailyRecurrence = ({ register, errors={errors}, getValues, setDates }) => 
   
   return (
   <div>
-    <button onClick={getDates}>GET DAILY DATES</button>
+    {/* <button onClick={getDates}>GET DAILY DATES</button> */}
     <p>Repeat every <RangeSelect register={register} name='interval' min={1} max={14} /> days</p>
   </div>
   )

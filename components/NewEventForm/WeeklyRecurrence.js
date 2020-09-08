@@ -1,9 +1,40 @@
+import { useEffect } from 'react'
+
 import moment from 'moment'
 
 import RangeSelect from './RangeSelect'
 import CheckboxInput from './CheckboxInput'
 
-const WeeklyRecurrence = ({ register, errors={errors}, getValues, setDates }) => {
+const WeeklyRecurrence = ({ register, errors={errors}, getValues, setDates, watch }) => {
+
+  const watchEndType = watch("endType")
+  const watchWeeklyInterval = watch("weeklyInterval")
+  const watchEndDate = watch("endDate")
+  const watchEndAfter = watch("endAfter")
+  const watchSunday = watch("sunday")
+  const watchMonday = watch("monday")
+  const watchTuesday = watch("tuesday")
+  const watchWednesday = watch("wednesday")
+  const watchThursday = watch("thursday")
+  const watchFriday = watch("friday")
+  const watchSaturday = watch("saturday")
+
+  useEffect(() => {
+    getDates()
+  }, [
+    watchEndType, 
+    watchWeeklyInterval, 
+    watchEndDate, 
+    watchEndAfter,
+    watchSunday,
+    watchMonday,
+    watchTuesday,
+    watchWednesday,
+    watchThursday,
+    watchFriday,
+    watchSaturday,
+    watchSunday,
+  ])
 
   const getCheckedDaysAsArrayOfIntegers = () => {
     const onTheseDays = []
@@ -30,12 +61,12 @@ const WeeklyRecurrence = ({ register, errors={errors}, getValues, setDates }) =>
 
     for (const [key, value] of Object.entries(checkedDays)) {
       if (value) onTheseDays.push(daysAsIntegers[key])
-    }  
+    } 
     return onTheseDays          
   }
   
   const getDates = (e) => {
-    e.preventDefault()
+    if (e) e.preventDefault()
 
     switch(getValues('endType')) {
       case 'untilDate': {
@@ -45,6 +76,10 @@ const WeeklyRecurrence = ({ register, errors={errors}, getValues, setDates }) =>
             interval: parseInt(getValues('weeklyInterval'),10),   // 2
             onTheseDays: getCheckedDaysAsArrayOfIntegers() // [1,3,5],
           }
+        if (event.onTheseDays.length===0) {
+          setDates([])
+          break;
+        }
         const dates = []
         const startDate = moment(event.start)
         const spacer = startDate.clone().day(0)
@@ -75,6 +110,10 @@ const WeeklyRecurrence = ({ register, errors={errors}, getValues, setDates }) =>
           interval: parseInt(getValues('weeklyInterval'),10),   // 2
           onTheseDays: getCheckedDaysAsArrayOfIntegers() // [1,3,5],
       }
+      if (event.onTheseDays.length===0) {
+        setDates([])
+        break;
+      }
       const dates = []
       const startDate = moment(event.start)
       const spacer = startDate.clone().day(0)
@@ -98,7 +137,7 @@ const WeeklyRecurrence = ({ register, errors={errors}, getValues, setDates }) =>
       setDates(dates)  
 
       break;
-      }
+       }
       default:
         setDates([])
     }
@@ -106,7 +145,7 @@ const WeeklyRecurrence = ({ register, errors={errors}, getValues, setDates }) =>
 
   return (
   <div>
-  <button onClick={getDates}>get weekly dates</button>
+  {/* <button onClick={getDates}>get weekly dates</button> */}
     
     <p>Repeat every <RangeSelect register={register} name='weeklyInterval' min={1} max={8} /> weeks</p>
 

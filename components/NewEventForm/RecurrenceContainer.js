@@ -37,6 +37,7 @@ const RecurrenceContainer = ({register, errors, watch, getValues, setDates }) =>
           errors={errors} 
           getValues={getValues}
           setDates={setDates}
+          watch={watch}
         />
       )}
       {watchRecurrenceSelect==="weekly" && (
@@ -45,6 +46,7 @@ const RecurrenceContainer = ({register, errors, watch, getValues, setDates }) =>
           errors={errors} 
           getValues={getValues}
           setDates={setDates}
+          watch={watch}
         />
       )}
       {watchRecurrenceSelect==="monthly" && (
@@ -53,6 +55,7 @@ const RecurrenceContainer = ({register, errors, watch, getValues, setDates }) =>
           errors={errors} 
           getValues={getValues}
           setDates={setDates}
+          watch={watch}
         />      
       )}
 

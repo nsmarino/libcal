@@ -3,10 +3,9 @@ import Link from 'next/link'
 import style from './calendar.module.css'
 import idGenerator from '../utils/idGenerator'
 
-
 const Calendar = ({ eventData, month }) => {
   if (!month) return null
-
+  console.log(eventData)
   // places events on calendar
   const findEvents = (day) => {
     const daysEvents = eventData.filter(event =>
@@ -14,13 +13,13 @@ const Calendar = ({ eventData, month }) => {
         date.day === day)
       )
     return daysEvents.length === 0 ? null : daysEvents.map(event =>
-        <Link href="/events/[id]" as={`/events/${event.id}`} key={event.id}>
-        
-        <a className={style.eventLink}><p className={style.eventName}>
-{event.name}
-</p></a>
-        </Link>
- 
+      <Link href="/events/[id]" as={`/events/${event.id}`} key={event.id}>
+        <a className={style.eventLink}>
+          <p className={style.eventName}>
+            {event.formData.title}
+          </p>
+        </a>
+      </Link>
       )
   }
 

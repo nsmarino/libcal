@@ -4,7 +4,9 @@ const RangeSelect = ({ register, name, min, max }) => {
         for (let i=min;i<=max;i++) {
             arr.push(i)
         }
-        return arr.map(num => <option value={num} key={num}>{num}</option>)
+        return arr.map(num => 
+          <option value={num} key={num}>{num}</option>
+        )
  
     }
 
