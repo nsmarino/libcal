@@ -1,59 +1,23 @@
 import Link from 'next/link'
 
 import { getEvent, updateEvent } from '../../../services/eventService'
-import { useField } from '../../../hooks/index'
 
-import RegForm from '../../../components/RegForm'
+import RegistrationForm from '../../../components/RegistrationForm'
+import Layout from '../../../components/Layout'
 
 export default function Registration({ event }) {
-    const patronFirstName = useField('text')
-    const patronLastName = useField('text')
-    const patronAddress = useField('text')
-    const patronLibraryCard = useField('text')
-    const patronPhone = useField('text')
-    const patronEmail = useField('text')
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        const patron = {
-            firstName: patronFirstName.inputProps.value,
-            lastName: patronLastName.inputProps.value,
-            address: patronAddress.inputProps.value,
-            phone: patronPhone.inputProps.value,
-            email: patronEmail.inputProps.value,
-            libraryCard: patronLibraryCard.inputProps.value,
-        }
-
-        const updatedEvent={...event, registered: event.registered.concat(patron)}
-        const submittedEvent = await updateEvent(event.id, updatedEvent)
-
-        patronFirstName.reset()
-        patronLastName.reset()
-        patronAddress.reset()
-        patronLibraryCard.reset()
-        patronPhone.reset()
-        patronEmail.reset()
-    }
 
     return (
-      <div>
-        <RegForm 
-          event={event}
-          firstName={patronFirstName}
-          lastName={patronLastName}
-          address={patronAddress}
-          phone={patronPhone}
-          email={patronEmail}
-          libraryCard={patronLibraryCard}
-          handleSubmit={handleSubmit} 
-        />
-
-        <Link href="/">
+      <Layout>
+        <h2>Register for {event.formData.title}</h2>
+        <RegistrationForm event={event} />
+    
+        <Link href="/events/[id]" as={`/events/${event.id}`}>
           <a>
-            <button>back to calendar</button>
+            <button>cancel</button>
           </a>
         </Link>
-      </div>
+      </Layout>
     )
 }
 

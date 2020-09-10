@@ -1,18 +1,18 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useForm } from "react-hook-form";
 import moment from 'moment'
 
-import { addEvent } from '../../services/eventService'
+import { addEvent, updateEvent } from '../../services/eventService'
 
-import TitleInput from './TitleInput'
-import DescriptionTextArea from './DescriptionTextArea'
+import TextInput from './TextInput'
+import TextAreaInput from './TextAreaInput'
 import DateInput from './DateInput'
 import TimeInput from './TimeInput'
 import CheckboxInput from './CheckboxInput'
 import RecurrenceContainer from './RecurrenceContainer';
 import NumberInput from './NumberInput';
-import DateListItem from './DateListItem'
+import DateList from './DateList'
 
 const EventForm = ({event}) => {
   const router = useRouter()
@@ -36,8 +36,7 @@ const EventForm = ({event}) => {
       }
     })
 
-  const watchRecurring = watch("recurring")
-
+  const watchRecurring = watch("recurring") // used by effect hook below
 
   const getDate = () => { // generates date object if non-recurring event.
     const date = moment(getValues("startDate"))
@@ -56,8 +55,7 @@ const EventForm = ({event}) => {
       }  
   }, [])
 
-  useEffect(() => {
-    
+  useEffect(() => { 
     if (event) {
       for (const property in event.formData) {
         if (property !== "recurring") setValue(property, event.formData[property])
@@ -68,23 +66,36 @@ const EventForm = ({event}) => {
     }   
   }, [watchRecurring])
 
-  const displayDates = () => {
-    return dates.map(date => <DateListItem date={date} key={`${date.day}${date.month}${date.year}`}/>)
+  const submitUpdatedEvent = (data) => {
+    const updatedEvent = {...event, dates: dates, formData: data}
+    updateEvent(event.id, updatedEvent)
+      .then(returnedEvent => {
+        if (!returnedEvent) {
+          setErrorMessage(
+            `Unable to update event. Please ensure all information is correct.`
+          )
+          setTimeout(() => {
+            setErrorMessage('')
+          }, 5000)
+        } else {
+          router.push(`/events/[id]`, `/events/${returnedEvent.id}`)
+        }
+      })
   }
 
   const onSubmit = (data) => {
-    if (!watchRecurring) console.log("ONE TIME EVENT!")
     if (dates.length===0) {
       alert('This event has no dates set. Please set at least one date.')
       return
     }
+    if (event) {
+      submitUpdatedEvent(data)
+    } else {
     const newEvent = {
       dates,
       formData: data,
       registered: [],
     }
-    console.log(newEvent)
-    ///////////////////////////////////
     addEvent(newEvent)
       .then(savedEvent=>{
         if (!savedEvent) {
@@ -95,23 +106,22 @@ const EventForm = ({event}) => {
             setErrorMessage('')
           }, 5000)
         } else {
-          console.log(savedEvent)
           router.push(`/events/[id]`, `/events/${savedEvent.id}`)
         }
       })
-      ///////////////////////////////////////
+    }  
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
         <p>{errorMessage}</p>
-        <TitleInput register={register} errors={errors} />
-        <DescriptionTextArea register={register} errors={errors} />
+        <TextInput register={register} name="title" label="Title" errors={errors} />
+        <TextAreaInput name="description" label="Description" register={register} errors={errors} />
         <DateInput name="startDate" label="Date" register={register} errors={errors} required={true} />
         <TimeInput name="startTime" label="Start at" register={register} errors={errors} />
         <TimeInput name="endTime" label="End at" register={register} errors={errors} />
         <CheckboxInput name="recurring" label="Recurring event" register={register} errors={errors} />
-        <ul>{displayDates()}</ul> 
+        <DateList dates={dates} />
 
       {watchRecurring && (
         <RecurrenceContainer 
@@ -127,7 +137,7 @@ const EventForm = ({event}) => {
         <CheckboxInput name="registrationRequired" label="Registration required" register={register} errors={errors} />
         <CheckboxInput name="carmelOnly" label="Give priority to Carmel residents" register={register} errors={errors} />
 
-        <input type="submit" disabled={dates.length===0}value="Create Event" />
+        <input type="submit" disabled={dates.length===0}value={event ? "Update Event" : "Create Event"} />
 
       </form>
     )

@@ -5,6 +5,7 @@ import RangeSelect from './RangeSelect'
 
 const DailyRecurrence = ({ register, errors={errors}, getValues, setDates, watch }) => {
 
+  const watchStartDate = watch("startDate")
   const watchEndType = watch("endType")
   const watchInterval = watch("interval")
   const watchEndDate = watch("endDate")
@@ -12,7 +13,7 @@ const DailyRecurrence = ({ register, errors={errors}, getValues, setDates, watch
 
   useEffect(() => {
     getDates()
-  }, [watchEndType, watchInterval, watchEndDate, watchEndAfter])
+  }, [watchStartDate, watchEndType, watchInterval, watchEndDate, watchEndAfter])
 
   const getDates = (e) => {
     if (e) e.preventDefault()
@@ -75,7 +76,6 @@ const DailyRecurrence = ({ register, errors={errors}, getValues, setDates, watch
   
   return (
   <div>
-    {/* <button onClick={getDates}>GET DAILY DATES</button> */}
     <p>Repeat every <RangeSelect register={register} name='interval' min={1} max={14} /> days</p>
   </div>
   )

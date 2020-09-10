@@ -39,7 +39,6 @@ export const deleteEvent = async (id) => {
 
 // ADD //
 export const addEvent = async (data) => {
-    console.log('on client side', data)
     const res = await fetch(
       `http://localhost:3000/api/events`, 
         {
@@ -64,7 +63,6 @@ export const updateEvent = async (id, data) => {
       }
     )
     const resToJson = await res.json()
-    console.log('res to json',resToJson)
     const eventData = resToJson.data
     return eventData
 }

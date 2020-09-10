@@ -1,58 +1,58 @@
-import Link from 'next/link'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 import { getEvent, updateEvent, deleteEvent } from '../../../services/eventService'
 
-const Registrant = ({ reg, removeRegistrant }) => {
-
-    return (
-    <div style={{border: '1px solid green', width: '20rem'}}>
-      <p>{reg.lastName} {reg.email}</p>
-      <button onClick={() => removeRegistrant(reg)}>remove</button>
-    </div>)
-}
+import Layout from '../../../components/Layout'
+import PatronCard from '../../../components/PatronCard'
+import EventForm from '../../../components/EventForm/EventForm'
 
 export default function AdminPage({ event }) {
+  const [patrons, setPatrons] = useState([])
+
+  useEffect(() => {
+    setPatrons(event.registered)  
+  }, [])
+
   const router = useRouter()
 
-  const removeRegistrant = (reg) => {
-    const updatedRegistrants = event.registered.filter(r => r._id !== reg._id)
-    const updatedEvent = {...event, registered: updatedRegistrants}
+  const removePatron = (patron) => {
+    const updatedPatrons = event.registered.filter(r => r._id !== patron._id)
+    const updatedEvent = {...event, registered: updatedPatrons}
     updateEvent(event.id, updatedEvent)
-      .then(returnedEvent => returnedEvent)
+      .then(returnedEvent => setPatrons(returnedEvent.registered))
   }
 
   const removeEvent = async () => {
     await deleteEvent(event.id)
     router.push('/')
   }
-
+  // hoist submit functions to this page so can reset state upon edits? or at least do so for patrons...
   return (
-    <div>
-        <h2>Admin: {event.name}</h2>
-        <p>{event.description}</p>
-        <p>time: {event.time}</p>
-        <div>
-            <h3>Registered:</h3>
-            {event.registered.map(reg => 
-              <Registrant 
-                key={reg._id} 
-                reg={reg} 
-                removeRegistrant={removeRegistrant} 
-              />)
-            }
-        </div>
-
-        <Link href="/">
-            <a>            
-            <button>EDIT EVENT</button>
-            <button onClick={removeEvent}>DELETE EVENT</button>
-            </a>
+    <Layout>
+        <h2>Admin Panel: {event.formData.title}</h2>
+        <EventForm event={event} />
+        <h3>Registered:</h3>
+        {patrons.map(patron => 
+          <PatronCard 
+            event={event}
+            key={patron._id} 
+            patron={patron} 
+            removePatron={removePatron} 
+          />)
+        }
+      <div>
+        <Link href="/events/[id]" as={`/events/${event.id}`}>
+          <a>
+            <button>cancel</button>
+          </a>
         </Link>
-    </div>
+        <button onClick={removeEvent}>DELETE EVENT</button>
+      </div>  
+    </Layout>
   )
 }
-
 
 // This gets called on every request
 export async function getServerSideProps({ params }) {

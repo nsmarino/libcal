@@ -58,6 +58,7 @@ const FormDataSchema = new mongoose.Schema({
 })
 
 const dateSchema = new mongoose.Schema({
+  dayOfWeek: Number,
   day: Number,
   month: Number,
   year: Number,

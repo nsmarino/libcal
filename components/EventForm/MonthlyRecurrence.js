@@ -7,6 +7,7 @@ import MonthlyRadio from './MonthlyRadio'
 
 const MonthlyRecurrence = ({ register, errors, getValues, setDates, watch }) => {
 
+  const watchStartDate = watch("startDate")
   const watchEndType = watch("endType")
   const watchMonthlyInterval = watch("weeklyInterval")
   const watchMonthlyType = watch("monthlyType")
@@ -19,6 +20,7 @@ const MonthlyRecurrence = ({ register, errors, getValues, setDates, watch }) => 
   useEffect(() => {
     getDates()
   }, [
+    watchStartDate,
     watchEndType, 
     watchMonthlyInterval,
     watchMonthlyType,
@@ -171,9 +173,7 @@ const MonthlyRecurrence = ({ register, errors, getValues, setDates, watch }) => 
 
   return (
   <div>
-    
     <p>Repeat every <RangeSelect register={register} name='monthlyInterval' min={1} max={3} /> months</p>
-
     <MonthlyRadio register={register} errors={errors} />
   </div>
   )

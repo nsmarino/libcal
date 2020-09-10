@@ -29,20 +29,3 @@ export default async function eventsHandler(req, res) {
       break
   }
 }
-
-// const errorHandler = (error, request, response) => {
-//   console.log('error handler', error.name)
-//   if (error.name === 'CastError' && error.kind === 'ObjectId') {
-//     return response.status(400).send({ error: 'malformatted id' 
-//     })
-//   } else if (error.name === 'ValidationError') {
-//     return response.status(400).json({ error: error.message 
-//     })
-//   } else if (error.name === 'JsonWebTokenError') {
-//     return response.status(401).json({
-//       error: 'invalid token'
-//     })
-//   } else {
-//     response.status(400).json({ success: false })
-//   }
-// }

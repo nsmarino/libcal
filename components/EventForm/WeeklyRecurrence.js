@@ -7,6 +7,7 @@ import CheckboxInput from './CheckboxInput'
 
 const WeeklyRecurrence = ({ register, errors={errors}, getValues, setDates, watch }) => {
 
+  const watchStartDate = watch("startDate")
   const watchEndType = watch("endType")
   const watchWeeklyInterval = watch("weeklyInterval")
   const watchEndDate = watch("endDate")
@@ -22,6 +23,7 @@ const WeeklyRecurrence = ({ register, errors={errors}, getValues, setDates, watc
   useEffect(() => {
     getDates()
   }, [
+    watchStartDate,
     watchEndType, 
     watchWeeklyInterval, 
     watchEndDate, 
@@ -144,9 +146,7 @@ const WeeklyRecurrence = ({ register, errors={errors}, getValues, setDates, watc
   }
 
   return (
-  <div>
-  {/* <button onClick={getDates}>get weekly dates</button> */}
-    
+  <div>    
     <p>Repeat every <RangeSelect register={register} name='weeklyInterval' min={1} max={8} /> weeks</p>
 
     <p>Occurs on:</p>

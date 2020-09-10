@@ -1,15 +1,9 @@
 * {
     box-sizing: border-box;
-}
-
-body {
-    background: white;
     margin: 0;
     padding: 0;
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+body {
+    background: white;
 }
