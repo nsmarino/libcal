@@ -1,7 +1,20 @@
-import style from './calendar.module.css'
+import styled from '@emotion/styled'
+
 import idGenerator from '../utils/idGenerator'
 import PlaceholderCard from './PlaceholderCard'
 import DayCard from './DayCard'
+
+const CalendarDiv = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 50vw;
+  justify-content: left;
+  border: 1px solid black;
+  max-width: 75vw;
+  @media screen and (max-width: 1400px) {
+    max-width: 100%;
+  }
+`
 
 const Calendar = ({ eventData, month }) => {
   if (!month) return null
@@ -19,28 +32,16 @@ const Calendar = ({ eventData, month }) => {
 
       return days.map(day => 
         day ?
-          <DayCard day={day} eventData={eventData} key={idGenerator()} />
+          <DayCard day={day} month={month} eventData={eventData} key={idGenerator()} />
           :
           <PlaceholderCard key={idGenerator()} />
       )
   }
 
   return (
-  <>
-  <h2>{month.name} {month.year}</h2>
-  <div className={style.dayLabels}>
-    <div>Sun</div>
-    <div>Mon</div>
-    <div>Tues</div>
-    <div>Wed</div>
-    <div>Thurs</div>
-    <div>Fri</div>
-    <div>Sat</div>
-  </div>
-  <div className={style.calContainer}>
+    <CalendarDiv>
       {displayMonth()}
-  </div>
-  </>
+    </CalendarDiv>
   )
 }
 

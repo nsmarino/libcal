@@ -2,10 +2,11 @@ import { useEffect } from 'react'
 
 import moment from 'moment'
 
+import NumberInput from './NumberInput'
 import RangeSelect from './RangeSelect'
 import CheckboxInput from './CheckboxInput'
 
-const WeeklyRecurrence = ({ register, errors={errors}, getValues, setDates, watch }) => {
+const WeeklyRecurrence = ({ register, errors={errors}, getValues, setValue, setDates, watch }) => {
 
   const watchStartDate = watch("startDate")
   const watchEndType = watch("endType")
@@ -147,7 +148,8 @@ const WeeklyRecurrence = ({ register, errors={errors}, getValues, setDates, watc
 
   return (
   <div>    
-    <p>Repeat every <RangeSelect register={register} name='weeklyInterval' min={1} max={8} /> weeks</p>
+    <div style={{display: 'inline-flex', alignItems: 'center'}}>Repeat every <NumberInput name='weeklyInterval' register={register} errors={errors} getValues={getValues} setValue={setValue}/> weeks</div>
+    {/* <p>Repeat every <RangeSelect register={register} name='weeklyInterval' min={1} max={8} /> weeks</p> */}
 
     <p>Occurs on:</p>
     <CheckboxInput name="sunday" label="Sunday" register={register} />

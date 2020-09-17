@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import moment from 'moment'
-
+import NumberInput from './NumberInput'
 import RangeSelect from './RangeSelect'
 
-const DailyRecurrence = ({ register, errors={errors}, getValues, setDates, watch }) => {
+const DailyRecurrence = ({ register, errors, getValues, setDates, setValue, watch }) => {
 
   const watchStartDate = watch("startDate")
   const watchEndType = watch("endType")
@@ -76,7 +76,8 @@ const DailyRecurrence = ({ register, errors={errors}, getValues, setDates, watch
   
   return (
   <div>
-    <p>Repeat every <RangeSelect register={register} name='interval' min={1} max={14} /> days</p>
+    {/* <p>Repeat every <RangeSelect register={register} name='interval' min={1} max={14} /> days</p> */}
+    <div style={{display: 'inline-flex', alignItems: 'center'}}>Repeat every <NumberInput name='interval' register={register} errors={errors} getValues={getValues} setValue={setValue}/> days</div>
   </div>
   )
 }

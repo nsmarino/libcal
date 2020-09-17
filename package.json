@@ -11,13 +11,14 @@
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
     "axios": "^0.19.2",
+    "babel-plugin-inline-react-svg": "^1.1.1",
     "dotenv": "^8.2.0",
     "moment": "^2.27.0",
     "mongoose": "^5.9.20",
     "next": "9.4.4",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-hook-form": "^6.7.1"
+    "react-hook-form": "^6.8.2"
   },
   "devDependencies": {}
 }

@@ -2,39 +2,45 @@ import EndRadio from './EndRadio'
 import DailyRecurrence from './DailyRecurrence'
 import WeeklyRecurrence from './WeeklyRecurrence'
 import MonthlyRecurrence from './MonthlyRecurrence'
-import OptionSelect from './OptionSelect'
+import SegmentedButtons from './SegmentedButtons'
 
-const RecurrenceContainer = ({register, errors, watch, getValues, setDates }) => {
+const RecurrenceContainer = ({register, errors, watch, getValues, setValue, setDates }) => {
     const watchRecurrenceSelect = watch("recurrenceType", 'daily')
-    
+
     const recurrenceOptions = [
       {
-        value: 'daily',
-        displayText: 'Daily',
+        set: "recurrenceType",
+        value: "daily",
+        label: "Daily",
       },
       {
-        value: 'weekly',
-        displayText: 'Weekly',
+        set: "recurrenceType",
+        value: "weekly",
+        label: "Weekly",
       },
       {
-        value: 'monthly',
-        displayText: 'Monthly',
+        set: "recurrenceType",
+        value: "monthly",
+        label: "Monthly",
       },
     ]
+
     
     return (
     <div>
-      <OptionSelect 
-        label="Recurrence pattern" 
-        name="recurrenceType"
+
+
+      <SegmentedButtons 
         options={recurrenceOptions}
         register={register}
+        watch={watch}
       />
 
       {watchRecurrenceSelect==="daily" && (
         <DailyRecurrence 
           register={register} 
-          errors={errors} 
+          errors={errors}
+          setValue={setValue} 
           getValues={getValues}
           setDates={setDates}
           watch={watch}
@@ -45,6 +51,7 @@ const RecurrenceContainer = ({register, errors, watch, getValues, setDates }) =>
           register={register} 
           errors={errors} 
           getValues={getValues}
+          setValue={setValue}
           setDates={setDates}
           watch={watch}
         />
@@ -54,12 +61,14 @@ const RecurrenceContainer = ({register, errors, watch, getValues, setDates }) =>
           register={register} 
           errors={errors} 
           getValues={getValues}
+          setValue={setValue}
           setDates={setDates}
           watch={watch}
         />      
       )}
 
       <EndRadio register={register} errors={errors} />
+
     </div>
     )
   }

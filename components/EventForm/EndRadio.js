@@ -1,7 +1,19 @@
 import { useEffect } from 'react'
 
+import styled from '@emotion/styled'
+
 import DateInput from './DateInput'
 import RangeSelect from './RangeSelect'
+
+const StyledRadioDiv = styled.div`
+
+/*
+input[type="radio"] {
+  position: fixed;
+  opacity: 0;
+  pointer-events: none;
+}*/
+`
 
 const EndRadio = ({ register, errors}) => {
 
@@ -9,7 +21,7 @@ const EndRadio = ({ register, errors}) => {
     
   }, [])
   return (
-  <div>
+  <StyledRadioDiv>
   <h3>End date</h3>
 
   <div>
@@ -30,7 +42,7 @@ const EndRadio = ({ register, errors}) => {
     </label>    
   </div>
 
-  </div> 
+  </StyledRadioDiv> 
   )
 }
 

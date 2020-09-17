@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useForm } from "react-hook-form";
 import moment from 'moment'
+import styled from '@emotion/styled'
 
 import { addEvent, updateEvent } from '../../services/eventService'
 
@@ -13,6 +14,34 @@ import CheckboxInput from './CheckboxInput'
 import RecurrenceContainer from './RecurrenceContainer';
 import NumberInput from './NumberInput';
 import DateList from './DateList'
+
+const StyledForm = styled.form`
+  border: 2px solid black;
+  margin: 1rem;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  min-width: 20rem;
+  input[type="submit"] {
+    color: yellow;
+    background: black;
+    border: none;
+    height: 2rem;
+  }
+
+`
+
+const StyledContainer = styled.div`
+  display: flex;
+  border-bottom: 1px solid grey;
+  
+`
+
+const StyledCheckBoxContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  
+`
 
 const EventForm = ({event}) => {
   const router = useRouter()
@@ -32,7 +61,11 @@ const EventForm = ({event}) => {
         endAfter: "5",
         monthlyType: "numberedDay",
         classSize: "10",
+        interval: '2',
+        weeklyInterval: '2',
+        monthlyInterval: '2',
         monday: true,
+        recurrenceType: "daily"
       }
     })
 
@@ -63,8 +96,16 @@ const EventForm = ({event}) => {
     }
     if (!watchRecurring) {
       getDate()
-    }   
+    } 
   }, [watchRecurring])
+
+  const watchStartDate = watch("startDate")
+
+  useEffect(() => {
+    if (!watchRecurring) {
+      getDate()
+    } 
+  }, [watchStartDate])
 
   const submitUpdatedEvent = (data) => {
     const updatedEvent = {...event, dates: dates, formData: data}
@@ -113,33 +154,64 @@ const EventForm = ({event}) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-        <p>{errorMessage}</p>
+    <StyledForm onSubmit={handleSubmit(onSubmit)}>
+       <p>{errorMessage}</p>
         <TextInput register={register} name="title" label="Title" errors={errors} />
         <TextAreaInput name="description" label="Description" register={register} errors={errors} />
+        
+        <StyledContainer>
         <DateInput name="startDate" label="Date" register={register} errors={errors} required={true} />
-        <TimeInput name="startTime" label="Start at" register={register} errors={errors} />
-        <TimeInput name="endTime" label="End at" register={register} errors={errors} />
-        <CheckboxInput name="recurring" label="Recurring event" register={register} errors={errors} />
-        <DateList dates={dates} />
+        <TimeInput name="startTime" label="From" register={register} errors={errors} />
+        <TimeInput name="endTime" label="to" register={register} errors={errors} />
+        </StyledContainer>
 
-      {watchRecurring && (
-        <RecurrenceContainer 
-          register={register} 
-          errors={errors} 
-          watch={watch} 
-          getValues={getValues} 
-          setDates={setDates}
-        />       
-      )}
+        <StyledContainer>      
+          <NumberInput 
+            name="classSize" 
+            label="Max size" 
+            register={register} 
+            errors={errors} 
+            getValues={getValues} 
+            setValue={setValue} 
+          />
+        
+          <StyledCheckBoxContainer>
+            <CheckboxInput name="registrationRequired" label="Registration required" register={register} errors={errors} />
+            <CheckboxInput name="carmelOnly" label="Prioritize Carmel residents" register={register} errors={errors} />
+          </StyledCheckBoxContainer>
 
-        <NumberInput name="classSize" label="Max number of participants" register={register} errors={errors} />
-        <CheckboxInput name="registrationRequired" label="Registration required" register={register} errors={errors} />
-        <CheckboxInput name="carmelOnly" label="Give priority to Carmel residents" register={register} errors={errors} />
+        </StyledContainer> 
+        <StyledContainer>
+          <div>
+          <CheckboxInput 
+            name="recurring" 
+            label="Recurring event" 
+            register={register} 
+            errors={errors} 
+          /> 
+            
+            {watchRecurring && (
+            <RecurrenceContainer 
+              register={register} 
+              errors={errors} 
+              watch={watch} 
+              getValues={getValues} 
+              setValue={setValue}
+              setDates={setDates}
+            />       
+            )}
+          </div>    
+          
+        <DateList dates={dates} /> 
+
+        </StyledContainer>
+
+     
+
 
         <input type="submit" disabled={dates.length===0}value={event ? "Update Event" : "Create Event"} />
 
-      </form>
+      </StyledForm>
     )
 }
 

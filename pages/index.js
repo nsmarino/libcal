@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import Link from 'next/link'
 
 import { getEventsByMonth } from '../services/eventService'
 
 import Calendar from '../components/Calendar'
 import Layout from '../components/Layout'
-import LinkButton from '../components/LinkButton'
+import Header from '../components/CalendarHeader' 
+import NewEventButton from '../components/NewEventButton'
 
 const getMonthObject = (month, year) => {
   const monthArr = [
@@ -44,7 +44,6 @@ const getCurrentMonth = () => {
 export default function Home({ monthData, eventData }) {  
   const [month, setMonth] = useState(monthData)
   const [events, setEvents] = useState(eventData)
-  
   const backToCurrentMonth = async () => {
     const currentMonth = getCurrentMonth()
     setMonth(currentMonth)
@@ -69,18 +68,13 @@ export default function Home({ monthData, eventData }) {
   }
 
   return (
-    <Layout>
+    <Layout month={month}>
       <main>
-        <button onClick={getPreviousMonth}>previous</button>
-        <button onClick={backToCurrentMonth}>current month</button>
-        <button onClick={getNextMonth}>next</button>
+        <Header month={month} setMonth={setMonth} setEvents={setEvents} />
+       
         <div>
-          <LinkButton href="/new" text="Create New Event" />
-        {/* <Link href="/new">
-          <a>
-            <button>CREATE NEW EVENT</button>
-          </a>
-        </Link> */}
+
+          <NewEventButton href="/new" text="Create New Event" />
         </div>
 
         <Calendar month={month} eventData={events} />
@@ -96,9 +90,4 @@ export async function getServerSideProps() {
 
   return { props: { monthData, eventData } }
 }
-
-// [✓ 9/10/2020]
-
-// Agile principles -- fully plan, code, and test part of system before moving on to next part.
-
 

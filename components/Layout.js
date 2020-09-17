@@ -1,25 +1,35 @@
 import Link from 'next/link'
 import Head from 'next/head'
 
+import styled from '@emotion/styled'
+
+const LayoutDiv = styled.div`
+  display: flex;
+
+  flex-direction: column;
+  align-items: center;
+
+  a {
+    text-decoration: none;
+  }
+  h1 {
+    color: black;
+  }
+
+`
+
 const Layout = ({children}) => {
 return (
-    <div>
+    <LayoutDiv>
     <Head>
       <title>Reed Events</title>
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-    </Head>
-    <header>
-    <Link href="/">
-          <a>
-              <h1>Reed Memorial Library</h1>
-          </a>
-        </Link>
-    </header>        
+    </Head>          
     {children}
     <footer>
         <p>yard guy 2020</p>
     </footer>
-    </div>
+    </LayoutDiv>
   )
 }
 

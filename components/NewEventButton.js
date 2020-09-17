@@ -1,8 +1,11 @@
 import Link from 'next/link'
 import styled from '@emotion/styled'
 
-const StyledLinkButton = styled.button`
+const StyledNewEventButton = styled.button`
 background: black;
+position: fixed;
+right: 0;
+bottom: 0;
 color: white;
 padding: 1rem;
 border: none;
@@ -11,14 +14,14 @@ border: none;
   color: yellow;
 }
 `
-const LinkButton = ({href, text, dynamic}) => {
+const NewEventButton = ({href, text, dynamic}) => {
     return (
     <Link href={href} as={dynamic ? `${dynamic}` : `${href}`}>
       <a>
-        <StyledLinkButton>{text}</StyledLinkButton>
+        <StyledNewEventButton>{text}</StyledNewEventButton>
       </a>
     </Link>
     )
 }
 
-export default LinkButton
+export default NewEventButton
