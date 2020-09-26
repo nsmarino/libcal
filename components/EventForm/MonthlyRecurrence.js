@@ -174,9 +174,14 @@ const MonthlyRecurrence = ({ register, errors, getValues, setValue, setDates, wa
 
   return (
   <div>
-    <div style={{display: 'inline-flex', alignItems: 'center'}}>Repeat every <NumberInput name='monthlyInterval' register={register} errors={errors} getValues={getValues} setValue={setValue}/> months</div>
-    {/* <p>Repeat every <RangeSelect register={register} name='monthlyInterval' min={1} max={3} /> months</p> */}
-    <MonthlyRadio register={register} errors={errors} />
+    <div 
+      style={
+        {display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center',
+        }
+      }>Repeat every <NumberInput name='monthlyInterval' register={register} errors={errors} getValues={getValues} setValue={setValue}/> months</div>
+    <MonthlyRadio register={register} watch={watch} errors={errors} />
   </div>
   )
 }

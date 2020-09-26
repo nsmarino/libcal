@@ -3,8 +3,7 @@ import { useEffect } from 'react'
 import moment from 'moment'
 
 import NumberInput from './NumberInput'
-import RangeSelect from './RangeSelect'
-import CheckboxInput from './CheckboxInput'
+import BlockCheckBox from './BlockCheckBox'
 
 const WeeklyRecurrence = ({ register, errors={errors}, getValues, setValue, setDates, watch }) => {
 
@@ -36,7 +35,6 @@ const WeeklyRecurrence = ({ register, errors={errors}, getValues, setValue, setD
     watchThursday,
     watchFriday,
     watchSaturday,
-    watchSunday,
   ])
 
   const getCheckedDaysAsArrayOfIntegers = () => {
@@ -148,17 +146,24 @@ const WeeklyRecurrence = ({ register, errors={errors}, getValues, setValue, setD
 
   return (
   <div>    
-    <div style={{display: 'inline-flex', alignItems: 'center'}}>Repeat every <NumberInput name='weeklyInterval' register={register} errors={errors} getValues={getValues} setValue={setValue}/> weeks</div>
-    {/* <p>Repeat every <RangeSelect register={register} name='weeklyInterval' min={1} max={8} /> weeks</p> */}
+    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1rem', marginBottom: '1rem'}}>Repeat every <NumberInput name='weeklyInterval' register={register} errors={errors} getValues={getValues} setValue={setValue}/> weeks</div>
+    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1rem', marginBottom: '1rem'}}>
 
-    <p>Occurs on:</p>
-    <CheckboxInput name="sunday" label="Sunday" register={register} />
+    <BlockCheckBox name="sunday" label="Su" register={register} checked={watchSunday} />
+    <BlockCheckBox name="monday" label="M" register={register} checked={watchMonday} />
+    <BlockCheckBox name="tuesday" label="Tu" register={register} checked={watchTuesday} />
+    <BlockCheckBox name="wednesday" label="W" register={register} checked={watchWednesday} />
+    <BlockCheckBox name="thursday" label="Th" register={register} checked={watchThursday} />
+    <BlockCheckBox name="friday" label="F" register={register} checked={watchFriday} />
+    <BlockCheckBox name="saturday" label="Sa" register={register} checked={watchSaturday} />
+    </div>
+    {/* <CheckboxInput name="sunday" label="Sunday" register={register} />
     <CheckboxInput name="monday" label="Monday" register={register} />
     <CheckboxInput name="tuesday" label="Tuesday" register={register} />
     <CheckboxInput name="wednesday" label="Wednesday" register={register} />
     <CheckboxInput name="thursday" label="Thursday" register={register} />
     <CheckboxInput name="friday" label="Friday" register={register} />
-    <CheckboxInput name="saturday" label="Saturday" register={register} />
+    <CheckboxInput name="saturday" label="Saturday" register={register} /> */}
   </div>
   )
 }

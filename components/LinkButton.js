@@ -4,7 +4,8 @@ import styled from '@emotion/styled'
 const StyledLinkButton = styled.button`
 background: black;
 color: white;
-padding: 1rem;
+padding: 0.5rem;
+margin: 0.25rem;
 border: none;
 &:hover {
   cursor: pointer;

@@ -11,7 +11,7 @@ const RangeSelect = ({ register, name, min, max }) => {
     }
 
     return (
-      <select name={name} ref={register({ required: true })}>
+      <select name={name} ref={register({ required: true })} style={{margin: '0.25rem'}}>
         {range()}
       </select>
     )

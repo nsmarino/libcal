@@ -1,9 +1,9 @@
-import Link from 'next/link'
+import { useState } from 'react'
 import { getEventsByMonth } from '../services/eventService'
 
 import LeftArrow from '../assets/arrow-left.svg'
 import RightArrow from '../assets/arrow-right.svg'
-
+import SideBar from './SideBar'
 import styled from '@emotion/styled'
 
 const StyledHeader = styled.header`
@@ -23,11 +23,28 @@ display: flex;
 align-items: center;
 justify-content: space-between;
 `
+
 const StyledLogoDiv = styled.div`
   width: 4rem;
   height: 4rem;
-  border: 1px solid black;
-`
+  margin: 0.25rem;
+  border: 1px solid grey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 75%;
+  letter-spacing: 0.1rem;
+  color: black;
+  box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+  :hover {
+    color: white;
+    background: black;
+    cursor: pointer;
+  }
+  `
+
 const StyledTitleDiv = styled.div`
   display: flex;
   align-items: center;
@@ -91,6 +108,7 @@ const getCurrentMonth = () => {
 }
 
 const Header = ({ month, setMonth, setEvents }) => {
+  const [sideBarVis, setSideBarVis] = useState(false)
 
   const backToCurrentMonth = async () => {
     const currentMonth = getCurrentMonth()
@@ -119,7 +137,7 @@ const Header = ({ month, setMonth, setEvents }) => {
   <StyledHeader>
 
     <StyledFlex>
-      <StyledLogoDiv onClick={backToCurrentMonth}>Reed Events</StyledLogoDiv>
+      <StyledLogoDiv onClick={backToCurrentMonth}>Back to Today</StyledLogoDiv>
 
       <StyledTitleDiv>
         <LeftArrow onClick={getPreviousMonth} />
@@ -127,14 +145,16 @@ const Header = ({ month, setMonth, setEvents }) => {
         <RightArrow onClick={getNextMonth} />
       </StyledTitleDiv>
 
-      <StyledMenuNav>
+      <StyledMenuNav onClick={() => setSideBarVis(!sideBarVis)}>
         <svg viewBox="0 0 100 80" width="40" height="40">
           <rect width="100" height="20"></rect>
           <rect y="30" width="100" height="20"></rect>
           <rect y="60" width="100" height="20"></rect>
         </svg>
       </StyledMenuNav>
+
     </StyledFlex>
+    <SideBar vis={sideBarVis} setVis={setSideBarVis} />
 
     <DayLabelsDiv>
       <div>Sun</div>

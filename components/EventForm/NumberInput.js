@@ -2,16 +2,25 @@ import styled from '@emotion/styled'
 
 const StyledNumberInput = styled.div`
 display: inline-flex;
-flex: 1 1 auto;
 flex-direction: column;
 align-items: center;
-
+label {
+  display: none;
+  border: none;
+  margin-bottom: 0.25rem;
+}
 button {
   background: black;
   color: white;
   border: none;
   width: 1rem;
-  height: 2rem;
+  height: 1rem;
+  border-radius: 50%;
+  margin: 0.25rem;
+}
+button:hover {
+  background: white;
+  color: black;
 }
 
 input[type=number]::-webkit-inner-spin-button, 
@@ -45,7 +54,6 @@ const NumberInput = ({name, label, register, errors, getValues, setValue}) => {
   
   return (
     <StyledNumberInput>
-      <label htmlFor={name}>{label}</label>
       <div>
         <button onClick={handleMinus}>-</button>
         <input type="number" name={name} ref={register({ required: true })} />

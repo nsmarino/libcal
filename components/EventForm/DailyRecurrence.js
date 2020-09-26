@@ -1,7 +1,14 @@
 import { useEffect } from 'react'
 import moment from 'moment'
+import styled from '@emotion/styled'
+
 import NumberInput from './NumberInput'
-import RangeSelect from './RangeSelect'
+
+const IntervalStyles = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+`
 
 const DailyRecurrence = ({ register, errors, getValues, setDates, setValue, watch }) => {
 
@@ -76,8 +83,7 @@ const DailyRecurrence = ({ register, errors, getValues, setDates, setValue, watc
   
   return (
   <div>
-    {/* <p>Repeat every <RangeSelect register={register} name='interval' min={1} max={14} /> days</p> */}
-    <div style={{display: 'inline-flex', alignItems: 'center'}}>Repeat every <NumberInput name='interval' register={register} errors={errors} getValues={getValues} setValue={setValue}/> days</div>
+    <IntervalStyles>Repeat every <NumberInput name='interval' register={register} errors={errors} getValues={getValues} setValue={setValue}/> days</IntervalStyles>
   </div>
   )
 }

@@ -1,31 +1,30 @@
-import { useEffect } from 'react'
-
 import styled from '@emotion/styled'
 
 import DateInput from './DateInput'
-import RangeSelect from './RangeSelect'
+import NumberInput from './NumberInput'
+import SegmentedBtns from './SegmentedBtns'
 
-const StyledRadioDiv = styled.div`
-
-/*
-input[type="radio"] {
-  position: fixed;
-  opacity: 0;
-  pointer-events: none;
-}*/
+const IntervalStyles = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
 `
 
-const EndRadio = ({ register, errors}) => {
 
-  useEffect(() => {
-    
-  }, [])
+const EndRadio = ({ register, errors, watch, getValues, setValue }) => {
+  const selected = watch('endType')
   return (
-  <StyledRadioDiv>
-  <h3>End date</h3>
-
-  <div>
-    <input type="radio" ref={register} name="endType" value="untilDate" />
+  <SegmentedBtns>
+  <label htmlFor="untilDate" className={selected==='untilDate' ? 'selected' : ''}>
+    <input 
+      type="radio" 
+      ref={register} 
+      name="endType" 
+      id="untilDate" 
+      value="untilDate" 
+    />
+    <IntervalStyles>
+    <span style={{marginRight: '0.5rem'}}>End by</span>
     <DateInput 
       name="endDate" 
       label="End by" 
@@ -33,16 +32,32 @@ const EndRadio = ({ register, errors}) => {
       errors={errors} 
       required={false}
     />
-  </div>
+    </IntervalStyles>
+  </label>
 
-  <div>
-    <label>
-      <input type="radio" ref={register} name="endType" value="afterOccurrences" />
-      After <RangeSelect register={register} name="endAfter" min={1} max={30} /> occurrences
-    </label>    
-  </div>
+  <label 
+    htmlFor="afterOccurrences" 
+    className={selected==='afterOccurrences' ? 'selected' : ''}
+  >
+    <input 
+      type="radio" 
+      ref={register} 
+      name="endType" 
+      id="afterOccurrences" 
+      value="afterOccurrences" 
+    />
+    <IntervalStyles>End after
+      <NumberInput 
+        name='endAfter' 
+        register={register} 
+        errors={errors} 
+        getValues={getValues} 
+        setValue={setValue} 
+      /> events
+    </IntervalStyles>
+  </label>    
 
-  </StyledRadioDiv> 
+  </SegmentedBtns> 
   )
 }
 

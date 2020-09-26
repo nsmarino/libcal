@@ -6,7 +6,6 @@ const StyledUl = styled.ul`
 margin: 0;
 padding: 0;
 list-style-type: none;
-font-family: Arial;
 font-size: 0.75rem;
 text-transform: uppercase;
 display: flex;

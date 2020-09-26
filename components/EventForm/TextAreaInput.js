@@ -1,17 +1,20 @@
 import styled from '@emotion/styled'
 
 const StyledTextArea = styled.div`
-  width: 100%;
-  display: flex;
-  textarea {
-    font-family: Arial;
+display: flex;
+justify-content: center;
+margin-top: 1rem;
+margin-bottom: 1rem;
+textarea {
+    font-family: Georgia;
+    max-width: 80%;
     flex: 1 0 auto;
     height: 9rem;
-    font-size: 2rem;
+    font-size: 1.5rem;
     padding: 0.25rem;
-    border: none;
-    border-bottom: 1px solid grey;
+    border: 1px solid grey;
     resize: none;
+    box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
   }
   
 `

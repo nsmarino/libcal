@@ -2,7 +2,8 @@ import EndRadio from './EndRadio'
 import DailyRecurrence from './DailyRecurrence'
 import WeeklyRecurrence from './WeeklyRecurrence'
 import MonthlyRecurrence from './MonthlyRecurrence'
-import SegmentedButtons from './SegmentedButtons'
+import SegmentedBtns from './SegmentedBtns'
+import SimpleSegmentBtn from './SimpleSegmentBtn'
 
 const RecurrenceContainer = ({register, errors, watch, getValues, setValue, setDates }) => {
     const watchRecurrenceSelect = watch("recurrenceType", 'daily')
@@ -28,13 +29,29 @@ const RecurrenceContainer = ({register, errors, watch, getValues, setValue, setD
     
     return (
     <div>
-
-
-      <SegmentedButtons 
-        options={recurrenceOptions}
-        register={register}
-        watch={watch}
-      />
+      <SegmentedBtns>
+        <SimpleSegmentBtn 
+          register={register} 
+          name='recurrenceType' 
+          value='daily' 
+          label='daily' 
+          currentValue={watchRecurrenceSelect} 
+        />
+        <SimpleSegmentBtn 
+          register={register} 
+          name='recurrenceType' 
+          value='weekly' 
+          label='weekly' 
+          currentValue={watchRecurrenceSelect} 
+        />
+        <SimpleSegmentBtn 
+          register={register} 
+          name='recurrenceType' 
+          value='monthly' 
+          label='monthly' 
+          currentValue={watchRecurrenceSelect} 
+        />
+      </SegmentedBtns>
 
       {watchRecurrenceSelect==="daily" && (
         <DailyRecurrence 
@@ -67,7 +84,7 @@ const RecurrenceContainer = ({register, errors, watch, getValues, setValue, setD
         />      
       )}
 
-      <EndRadio register={register} errors={errors} />
+      <EndRadio register={register} errors={errors} watch={watch} getValues={getValues} setValue={setValue} />
 
     </div>
     )

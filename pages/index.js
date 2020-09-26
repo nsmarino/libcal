@@ -74,7 +74,7 @@ export default function Home({ monthData, eventData }) {
        
         <div>
 
-          <NewEventButton href="/new" text="Create New Event" />
+          <NewEventButton href="/new" text="New Event" />
         </div>
 
         <Calendar month={month} eventData={events} />

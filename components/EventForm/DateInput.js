@@ -1,8 +1,10 @@
 import styled from '@emotion/styled'
 
 const StyledDateInput = styled.div`
-  width: 100%;
   display: flex;
+  box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+  border: 1px solid grey;
+
 
   input {
   }
@@ -18,12 +20,11 @@ input[type="date"]::-webkit-inner-spin-button {
 
 
 input[type="date"] {
-    flex: 1 0 auto;
+    /* flex: 1 0 auto;*/
     padding: 0.25rem;
     border: none;
     -webkit-appearance: none;
-    color: grey;
-    font-family: Arial;
+    color: black;
     font-size: 1rem;
     background:white;
   } 

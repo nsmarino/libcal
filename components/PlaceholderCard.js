@@ -4,7 +4,7 @@ const PlaceholderCardDiv = styled.div`
 border: 1px solid black;
 background: whitesmoke;
 width: calc(100% / 7);
-min-height: 6rem;
+min-height: 8rem;
 @media screen and (max-width: 600px) {
   display: none;
 }

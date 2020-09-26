@@ -1,15 +1,15 @@
 import { getEvent } from '../../services/eventService'
 
 import Layout from '../../components/Layout'
+import DefaultHeader from '../../components/DefaultHeader'
 import EventInfo from '../../components/EventInfo'
 
 export default function EventPage({ event }) {
 
   return (
   <Layout>
-
+    <DefaultHeader title='Register' />
     <EventInfo event={event} /> 
-
   </Layout>
   )
 }

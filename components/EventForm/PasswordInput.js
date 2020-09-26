@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-const StyledTextInput = styled.div`
+const StyledInput = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 2rem;
@@ -17,13 +17,13 @@ const StyledTextInput = styled.div`
   
 `
 
-const TextInput = ({register, name, label, errors}) => {
+const PasswordInput = ({register, name, label, errors}) => {
   return (
-  <StyledTextInput>
-      <input name={name} placeholder={label} ref={register({ required: true })} />
+  <StyledInput>
+      <input type="password" name={name} placeholder={label} ref={register({ required: true })} />
     {errors[name] && <p>This field is required</p>}
-  </StyledTextInput>
+  </StyledInput>
   )
 }
 
-export default TextInput
+export default PasswordInput

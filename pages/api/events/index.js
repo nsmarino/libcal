@@ -1,6 +1,15 @@
+const jwt = require('jsonwebtoken')
 import dbConnect from '../../../utils/dbConnect'
 import errorHandler from '../../../utils/errorHandler'
 import Event from '../../../models/Event'
+
+const getTokenFrom = request => {  
+  const authorization = request.get('authorization')  
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {    
+    return authorization.substring(7)  
+  }  
+  return null
+}
 
 export default async function eventsHandler(req, res) {
   const { method } = req
@@ -16,6 +25,12 @@ export default async function eventsHandler(req, res) {
       break
     case 'POST': // Add new event.
       try {
+        const token = getTokenFrom(req)  
+        const decodedToken = jwt.verify(token, process.env.SECRET)  
+        if (!token || !decodedToken.id) {    
+          return response.status(401).json({ error: 'token missing or invalid' })  
+        }  
+
         const event = await Event.create(
           req.body
         )

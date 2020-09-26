@@ -2,11 +2,44 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useForm } from "react-hook-form";
 
+import styled from '@emotion/styled'
+
 import { updateEvent } from '../services/eventService'
+
+const StyledForm = styled.form`
+  margin: 1rem;
+  background: #AFD9AF;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 90%;
+  box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+  border: 1px solid grey;
+  input[type="submit"] {
+    color: white;
+    background: black;
+    border: 1px solid grey;
+    height: 4rem;
+    width: 40%;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  input[type="submit"]:disabled {
+    background: grey;
+  }
+
+  @media screen and (min-width: 600px) {
+    min-width: 40rem;
+  }
+
+`
 
 import TextInput from './EventForm/TextInput'
 
-const RegistrationForm = ({ event, patron }) => {
+const RegistrationForm = ({ event, patron, setUpdate }) => {
   const [errorMessage, setErrorMessage] = useState('')
 
   const router = useRouter()
@@ -56,7 +89,7 @@ const RegistrationForm = ({ event, patron }) => {
     }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <StyledForm onSubmit={handleSubmit(onSubmit)}>
       {errorMessage}
       <TextInput register={register} name="firstName" label="First Name" errors={errors} />
       <TextInput register={register} name="lastName" label="Last Name" errors={errors} />
@@ -66,7 +99,9 @@ const RegistrationForm = ({ event, patron }) => {
       <TextInput register={register} name="libraryCard" label="Library Card" errors={errors} />
       
       <input type="submit" value={patron ? "Update Patron Information" : "Register"} /> 
-    </form>
+      {patron && <button onClick={() => setUpdate(false)}>cancel</button>}
+
+    </StyledForm>
   )
 }
 

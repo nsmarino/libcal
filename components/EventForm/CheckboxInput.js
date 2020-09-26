@@ -1,8 +1,13 @@
 import styled from '@emotion/styled'
 const StyledCheckBox = styled.div`
 padding: 0.5rem;
+display: flex;
+justify-content: center;
 :hover {
-  background: lightgrey;
+  background: white;
+  transform: translateY(-2px);
+  box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+  transition: transform 100ms ease;
 }
 `
 const CheckboxInput = ({name, label, register}) => {

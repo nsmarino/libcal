@@ -1,7 +1,9 @@
 import RangeSelect from './RangeSelect'
 import OptionSelect from './OptionSelect'
+import SegmentedBtns from './SegmentedBtns'
+import SegmentedButtons from './SegmentedBtns'
 
-const MonthlyRadio = ({ register, errors}) => {
+const MonthlyRadio = ({ register, watch, errors}) => {
   const ordinalOptions = [
     {
       value: '1',
@@ -54,19 +56,16 @@ const MonthlyRadio = ({ register, errors}) => {
         displayText: 'Saturday',
       },
   ]
-
+  const selected = watch('monthlyType')
   return (
-  <div>
-  <h3>Occurs on</h3>
+    <SegmentedButtons>
+    <label htmlFor="numberedDay" className={selected==='numberedDay' ? 'selected' : ''}>
+    <input type="radio" ref={register} id="numberedDay" name="monthlyType" value="numberedDay" />
+    <span>Day</span><RangeSelect register={register} name="numberedDay" min={1} max={28} /><span>of the month</span>
+    </label>
 
-  <div>
-    <input type="radio" ref={register} name="monthlyType" value="numberedDay" />
-    Day <RangeSelect register={register} name="numberedDay" min={1} max={28} /> of the month
-  </div>
-
-  <div>
-    <label>
-      <input type="radio" ref={register} name="monthlyType" value="namedDay" />
+    <label htmlFor="namedDay" className={selected==='namedDay' ? 'selected' : ''}>
+      <input type="radio" ref={register} id="namedDay" name="monthlyType" value="namedDay" />
       <OptionSelect 
         label="" 
         name="ordinalOfMonth"
@@ -80,9 +79,7 @@ const MonthlyRadio = ({ register, errors}) => {
         register={register}
       /> of the month
     </label>    
-  </div>
-
-  </div> 
+  </SegmentedButtons>
   )
 }
 

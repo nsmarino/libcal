@@ -1,14 +1,18 @@
 import styled from '@emotion/styled'
 
 const StyledTimeInput = styled.div`
-  width: 100%;
   display: flex;
-  flex-direction: column;
+  background: white;
   align-items: center;
-  font-family: Arial;
+  margin-left: 0.5rem;
+  padding-left: 0.25rem;
+  box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+  border: 1px solid grey;
+
+  label {
+    margin-right: 0.25rem;
+  }
   input {
-    flex: 1 0 auto;
-    font-family: Arial;
     font-size: 1rem;
     border: none;
     flex: 1 0 auto;
@@ -16,12 +20,16 @@ const StyledTimeInput = styled.div`
     border: none;
     appearance: none;
     -webkit-appearance: none;
-    color: grey;
+    color: black;
     font-size: 1rem;
     background:white;
     display: inline-block !important;
     visibility: visible !important;
   }
+
+  @media screen and (max-width: 600px) {
+    margin-bottom: 1rem;
+   }
   
 `
 

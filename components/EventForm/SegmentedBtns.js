@@ -2,9 +2,12 @@ import styled from '@emotion/styled'
 
 const SegmentedButtonsDiv = styled.div`
   display: flex;
-  font-family: Arial;
-  font-size: 1.5rem;
-
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  margin-top: 2rem;
+  height: 2rem;
+  margin-bottom: 2rem;
   label:first-of-type {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
@@ -16,10 +19,12 @@ const SegmentedButtonsDiv = styled.div`
       }
 
   label {
-      display: block;
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem;
       text-align: center;
       border: 1px solid black;
-      width: 6rem;
+      height: 2.25rem;
   }
   input[type="radio"] {
     position: fixed;
@@ -28,34 +33,17 @@ const SegmentedButtonsDiv = styled.div`
   }  
   .selected {
     background: black;
-    color: yellow;
+    color: white;
     transform: translateY(-2px);
-    box-shadow: 0px 3px 5px lightgrey;
+    box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
     transition: transform 100ms ease;
   }
 `
 
-const SegmentedButtons = ({options, register, watch}) => {
-  const selection = watch("recurrenceType")
-
-  const buttons = () => {
-      return options.map(option => {
-
-        return <label className={option.value===selection ? "selected" : ''} key={option.value}>
-          <input
-            ref={register} 
-            type="radio" 
-            id={option.value} 
-            name={option.set}
-            value={option.value} 
-           />{option.label}
-        </label>
-  })
-    }
-
+const SegmentedButtons = ({children}) => {
     return (
         <SegmentedButtonsDiv>
-          {buttons()}
+          {children}
         </SegmentedButtonsDiv>
     )
 }

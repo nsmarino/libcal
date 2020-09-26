@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm } from "react-hook-form";
 import moment from 'moment'
 import styled from '@emotion/styled'
 
-import { addEvent, updateEvent } from '../../services/eventService'
+import { addEvent, updateEvent, deleteEvent } from '../../services/eventService'
 
 import TextInput from './TextInput'
 import TextAreaInput from './TextAreaInput'
@@ -16,31 +17,61 @@ import NumberInput from './NumberInput';
 import DateList from './DateList'
 
 const StyledForm = styled.form`
-  border: 2px solid black;
   margin: 1rem;
-  background: white;
+  background: #AFD9AF;
   display: flex;
   flex-direction: column;
-  min-width: 20rem;
+  justify-content: center;
+ 
+  box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+  border: 1px solid grey;
   input[type="submit"] {
-    color: yellow;
+    color: white;
     background: black;
-    border: none;
-    height: 2rem;
+    border: 1px solid grey;
+    height: 4rem;
+    width: 40%;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  input[type="submit"]:disabled {
+    background: grey;
+  }
+
+  @media screen and (min-width: 600px) {
+    min-width: 40rem;
   }
 
 `
 
 const StyledContainer = styled.div`
   display: flex;
+  width: 80%;
+  margin-left: 10%;
+  flex-direction: column;
+  justify-content: center;
   border-bottom: 1px solid grey;
-  
+`
+
+const StyledInfoContainer = styled.div`
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  @media screen and (max-width: 600px) {
+   flex-direction: column;
+  }
 `
 
 const StyledCheckBoxContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  
+  display: flex;  
 `
 
 const EventForm = ({event}) => {
@@ -61,9 +92,9 @@ const EventForm = ({event}) => {
         endAfter: "5",
         monthlyType: "numberedDay",
         classSize: "10",
-        interval: '2',
-        weeklyInterval: '2',
-        monthlyInterval: '2',
+        interval: '1',
+        weeklyInterval: '1',
+        monthlyInterval: '1',
         monday: true,
         recurrenceType: "daily"
       }
@@ -153,39 +184,45 @@ const EventForm = ({event}) => {
     }  
   }
 
+  const removeEvent = async () => {
+    await deleteEvent(event.id)
+    router.push('/')
+  }
+
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
        <p>{errorMessage}</p>
         <TextInput register={register} name="title" label="Title" errors={errors} />
         <TextAreaInput name="description" label="Description" register={register} errors={errors} />
         
-        <StyledContainer>
-        <DateInput name="startDate" label="Date" register={register} errors={errors} required={true} />
-        <TimeInput name="startTime" label="From" register={register} errors={errors} />
-        <TimeInput name="endTime" label="to" register={register} errors={errors} />
-        </StyledContainer>
+        <StyledInfoContainer>
+          <DateInput name="startDate" label="Date" register={register} errors={errors} required={true} />
+          <TimeInput name="startTime" label="From" register={register} errors={errors} />
+          <TimeInput name="endTime" label="to" register={register} errors={errors} />
+        </StyledInfoContainer>
 
-        <StyledContainer>      
+        <StyledInfoContainer>      
+          <div>Max size:
           <NumberInput 
             name="classSize" 
-            label="Max size" 
+            label="Max size:" 
             register={register} 
             errors={errors} 
             getValues={getValues} 
             setValue={setValue} 
           />
+            </div>
         
           <StyledCheckBoxContainer>
             <CheckboxInput name="registrationRequired" label="Registration required" register={register} errors={errors} />
             <CheckboxInput name="carmelOnly" label="Prioritize Carmel residents" register={register} errors={errors} />
           </StyledCheckBoxContainer>
 
-        </StyledContainer> 
+        </StyledInfoContainer> 
         <StyledContainer>
-          <div>
           <CheckboxInput 
             name="recurring" 
-            label="Recurring event" 
+            label="Recurring event?" 
             register={register} 
             errors={errors} 
           /> 
@@ -200,17 +237,25 @@ const EventForm = ({event}) => {
               setDates={setDates}
             />       
             )}
-          </div>    
           
-        <DateList dates={dates} /> 
 
         </StyledContainer>
-
+        <DateList dates={dates} /> 
      
 
 
-        <input type="submit" disabled={dates.length===0}value={event ? "Update Event" : "Create Event"} />
-
+        <input type="submit" disabled={dates.length===0} value={event ? "Update Event" : "Create Event"} />
+        { event &&
+        <>
+          <button onClick={removeEvent}>DELETE EVENT</button>
+          <Link href="/events/[id]" as={`/events/${event.id}`}>
+            <a>
+              <button>cancel</button>
+            </a>
+          </Link>
+        </>
+        }
+             
       </StyledForm>
     )
 }

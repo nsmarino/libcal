@@ -1,12 +1,32 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
+
+import styled from '@emotion/styled'
 
 import { getEvent, updateEvent, deleteEvent } from '../../../services/eventService'
 
+import DefaultHeader from '../../../components/DefaultHeader'
 import Layout from '../../../components/Layout'
 import PatronCard from '../../../components/PatronCard'
 import EventForm from '../../../components/EventForm/EventForm'
+
+const AdminContainer = styled.div`
+  display: flex;
+  width: 75vw;    
+  flex-direction: column;
+  @media screen and (max-width: 800px) {
+    width: 100%
+  }
+`
+
+const PatronContainer = styled.div`
+margin: 1rem;
+display: flex;
+flex-direction: column;
+h3 {
+  margin-bottom: 2rem;
+}
+`
 
 export default function AdminPage({ event }) {
   const [patrons, setPatrons] = useState([])
@@ -24,15 +44,13 @@ export default function AdminPage({ event }) {
       .then(returnedEvent => setPatrons(returnedEvent.registered))
   }
 
-  const removeEvent = async () => {
-    await deleteEvent(event.id)
-    router.push('/')
-  }
   // hoist submit functions to this page so can reset state upon edits? or at least do so for patrons...
   return (
     <Layout>
-        <h2>Admin Panel: {event.formData.title}</h2>
+      <DefaultHeader title={`Edit: ${event.formData.title}`}/>
+      <AdminContainer>
         <EventForm event={event} />
+        <PatronContainer>
         <h3>Registered:</h3>
         {patrons.map(patron => 
           <PatronCard 
@@ -42,14 +60,8 @@ export default function AdminPage({ event }) {
             removePatron={removePatron} 
           />)
         }
-      <div>
-        <Link href="/events/[id]" as={`/events/${event.id}`}>
-          <a>
-            <button>cancel</button>
-          </a>
-        </Link>
-        <button onClick={removeEvent}>DELETE EVENT</button>
-      </div>  
+        </PatronContainer>
+      </AdminContainer>
     </Layout>
   )
 }
