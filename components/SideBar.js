@@ -1,5 +1,8 @@
+import { useState, useEffect, useContext } from 'react'
 import Link from 'next/link'
 import styled from '@emotion/styled'
+import Cookies from 'js-cookie'
+import { useAdmin } from '../context/admin'
 
 const Styles = styled.div`
   a {
@@ -47,14 +50,25 @@ const Styles = styled.div`
 `
 
 const SideBar = ({vis, setVis}) => {
-    
+    const { admin, setAdmin } = useAdmin()
+
+    const handleLogout = () => {
+      Cookies.remove('token')
+      setAdmin(null)
+    }
+
     return (
     <Styles>
       <div className={vis ? 'vis' : 'hidden'} style={{padding: '1rem'}}>
 
-        <ul style={{listStyleType: 'none'}}>
-            <li><Link href="/login"><a>Admin Login</a></Link></li>
-            <li><a href="http://carmellibrary.org/">Visit Library Site</a></li>
+        <ul style={{listStyleType: 'none'}}>            
+          <li><a href="http://carmellibrary.org/">Visit Library Site</a></li>
+          <li>{ admin ? 
+                <span onClick={handleLogout}>Logout</span> 
+                : 
+                <Link href="/login"><a>Admin Login</a></Link>
+              }
+          </li>
         </ul>
  
         <div>

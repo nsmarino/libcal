@@ -1,5 +1,5 @@
 const errorHandler = (error, request, response) => {
-    console.log('error handler', error.name)
+    console.log('error handler', error)
     if (error.name === 'CastError' && error.kind === 'ObjectId') {
       return response.status(400).send({ error: 'malformatted id' 
       })

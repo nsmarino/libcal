@@ -2,7 +2,7 @@ import Link from 'next/link'
 import styled from '@emotion/styled'
 import moment from 'moment'
 
-const dayArr = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"]
+const dayArr = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", ]
 const monthObj = {
   January: "Jan",
   February: "Feb",
@@ -32,6 +32,8 @@ const DayCardDiv = styled.div`
   p:hover {
     transform: translateY(-2px);
     box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+    background: white;
+
   }
   .eventTime {
     padding-right: 0.5rem;
@@ -76,8 +78,9 @@ display: none;
 `
 
 const DayCard = ({ day, month, eventData }) => {
-  const dayMoment = moment(`${month.year}-${month.number+1}-${day}`)
-  
+  const zeroPad = (num, places) => String(num).padStart(places, '0')
+  const dayMoment = moment(`${month.year}-${zeroPad(month.number+1,2)}-${zeroPad(day,2)}`)
+
   const dayOfWeek = dayArr[dayMoment.day()]
 
   const findEvents = (day) => {
@@ -96,8 +99,11 @@ const DayCard = ({ day, month, eventData }) => {
       ) 
     } 
   }
+
+  const color = moment().isSame(dayMoment, 'day') ? '#AFD9AF' : 'white'
+  
   return (
-    <DayCardDiv>
+    <DayCardDiv style={{backgroundColor: color }}>
 
       { findEvents(day) ?
         <MobileH3>{dayOfWeek} {monthObj[month.name]} {day}</MobileH3>

@@ -6,6 +6,7 @@ import DayCard from './DayCard'
 
 const CalendarDiv = styled.div`
   display: flex;
+  background: whitesmoke;
   flex-wrap: wrap;
   min-width: 50vw;
   justify-content: left;

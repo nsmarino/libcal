@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm } from "react-hook-form";
+import { useAdmin } from '../../context/admin'
 import moment from 'moment'
 import styled from '@emotion/styled'
 
@@ -15,6 +16,7 @@ import CheckboxInput from './CheckboxInput'
 import RecurrenceContainer from './RecurrenceContainer';
 import NumberInput from './NumberInput';
 import DateList from './DateList'
+import PreviewCalendar from '../PreviewCalendar';
 
 const StyledForm = styled.form`
   margin: 1rem;
@@ -75,9 +77,11 @@ const StyledCheckBoxContainer = styled.div`
 `
 
 const EventForm = ({event}) => {
+  const { admin } = useAdmin()
   const router = useRouter()
   const [dates, setDates] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
+
 
   const { 
     register, handleSubmit, watch, errors, getValues, setValue 
@@ -140,7 +144,7 @@ const EventForm = ({event}) => {
 
   const submitUpdatedEvent = (data) => {
     const updatedEvent = {...event, dates: dates, formData: data}
-    updateEvent(event.id, updatedEvent)
+    updateEvent(event.id, updatedEvent, admin)
       .then(returnedEvent => {
         if (!returnedEvent) {
           setErrorMessage(
@@ -160,6 +164,9 @@ const EventForm = ({event}) => {
       alert('This event has no dates set. Please set at least one date.')
       return
     }
+    if (!admin) {
+      alert('Only administrators can add new events.')
+    }
     if (event) {
       submitUpdatedEvent(data)
     } else {
@@ -168,7 +175,7 @@ const EventForm = ({event}) => {
       formData: data,
       registered: [],
     }
-    addEvent(newEvent)
+    addEvent(newEvent, admin)
       .then(savedEvent=>{
         if (!savedEvent) {
           setErrorMessage(
@@ -184,8 +191,9 @@ const EventForm = ({event}) => {
     }  
   }
 
-  const removeEvent = async () => {
-    await deleteEvent(event.id)
+  const removeEvent = async (e) => {
+    e.preventDefault()
+    await deleteEvent(event.id, admin)
     router.push('/')
   }
 
@@ -240,6 +248,7 @@ const EventForm = ({event}) => {
           
 
         </StyledContainer>
+        <PreviewCalendar dates={dates} />
         <DateList dates={dates} /> 
      
 
@@ -247,7 +256,7 @@ const EventForm = ({event}) => {
         <input type="submit" disabled={dates.length===0} value={event ? "Update Event" : "Create Event"} />
         { event &&
         <>
-          <button onClick={removeEvent}>DELETE EVENT</button>
+          <button onClick={(e) => removeEvent(e)}>DELETE EVENT</button>
           <Link href="/events/[id]" as={`/events/${event.id}`}>
             <a>
               <button>cancel</button>

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
+import { useAdmin } from '../../../context/admin'
 
 import styled from '@emotion/styled'
 
-import { getEvent, updateEvent, deleteEvent } from '../../../services/eventService'
+import { getEvent, updateEvent } from '../../../services/eventService'
 
 import DefaultHeader from '../../../components/DefaultHeader'
 import Layout from '../../../components/Layout'
@@ -29,13 +29,14 @@ h3 {
 `
 
 export default function AdminPage({ event }) {
+  const { admin } = useAdmin()
   const [patrons, setPatrons] = useState([])
 
   useEffect(() => {
     setPatrons(event.registered)  
   }, [])
 
-  const router = useRouter()
+  // const router = useRouter()
 
   const removePatron = (patron) => {
     const updatedPatrons = event.registered.filter(r => r._id !== patron._id)
@@ -44,8 +45,8 @@ export default function AdminPage({ event }) {
       .then(returnedEvent => setPatrons(returnedEvent.registered))
   }
 
-  // hoist submit functions to this page so can reset state upon edits? or at least do so for patrons...
   return (
+  <>{admin ?
     <Layout>
       <DefaultHeader title={`Edit: ${event.formData.title}`}/>
       <AdminContainer>
@@ -62,7 +63,8 @@ export default function AdminPage({ event }) {
         }
         </PatronContainer>
       </AdminContainer>
-    </Layout>
+    </Layout> : null}
+    </>  
   )
 }
 

@@ -30,20 +30,25 @@ export const getEvent = async (id) => {
 }
 
 // DELETE //
-export const deleteEvent = async (id) => {
-    const res = await fetch(`http://localhost:3000/api/events/${id}`, { method: 'DELETE', })
+export const deleteEvent = async (id, token) => {
+    const res = await fetch(
+      `http://localhost:3000/api/events/${id}`, 
+      { 
+        method: 'DELETE',
+        headers: {'Set-Cookie': `token=${token}`}, 
+      })
     const resToJson = await res.json()
     const eventData = resToJson.data
     return eventData
 }
 
 // ADD //
-export const addEvent = async (data) => {
+export const addEvent = async (data, token) => {
     const res = await fetch(
       `http://localhost:3000/api/events`, 
         {
           method: 'POST', 
-          headers: {'Content-Type': 'application/json'}, 
+          headers: {'Content-Type': 'application/json', 'Set-Cookie': `token=${token}`}, 
           body: JSON.stringify(data),
         }
       )
@@ -53,12 +58,12 @@ export const addEvent = async (data) => {
 }
 
 // UPDATE //
-export const updateEvent = async (id, data) => {
+export const updateEvent = async (id, data, token) => {
     const res = await fetch(
       `http://localhost:3000/api/events/${id}`, 
       { 
         method: 'PUT',
-        headers: {'Content-Type': 'application/json'},  
+        headers: {'Content-Type': 'application/json', 'Set-Cookie': `token=${token}`}, 
         body: JSON.stringify(data) 
       }
     )

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useForm } from "react-hook-form";
+import { useAdmin } from '../context/admin'
 
 import styled from '@emotion/styled'
 
@@ -41,6 +42,7 @@ import TextInput from './EventForm/TextInput'
 
 const RegistrationForm = ({ event, patron, setUpdate }) => {
   const [errorMessage, setErrorMessage] = useState('')
+  const { admin } = useAdmin()
 
   const router = useRouter()
 
@@ -73,7 +75,7 @@ const RegistrationForm = ({ event, patron, setUpdate }) => {
     :
     {...event, registered: [...event.registered, data]}
     
-    updateEvent(event.id, updatedEvent)
+    updateEvent(event.id, updatedEvent, admin)
       .then(returnedEvent => {
         if (!returnedEvent) {
           setErrorMessage(

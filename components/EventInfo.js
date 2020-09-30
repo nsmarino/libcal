@@ -1,7 +1,8 @@
 import styled from '@emotion/styled'
-
+import { useAdmin } from '../context/admin'
 import LinkButton from './LinkButton'
 import DateList from './EventForm/DateList'
+import PreviewCalendar from './PreviewCalendar'
 
 const StyledEventInfo = styled.div`
 margin: 1rem;
@@ -38,16 +39,20 @@ p {
 }
 `
 
-const EventInfo = ({ event }) => {
+export default function EventInfo({ event, month }) {
+
+  const { admin } = useAdmin()
     return (
       <StyledEventInfo>
-        <h2>{event.formData.title}
+        <h2>{event.formData.title}</h2>
+
+        { admin &&
           <LinkButton 
             href="/events/admin/[id]" 
             dynamic={`/events/admin/${event.id}`} 
             text="admin" 
-          />
-        </h2>
+          /> 
+        }
         <p>{event.formData.startTime} to {event.formData.endTime}</p>
 
         <p>{event.formData.description}</p>
@@ -64,9 +69,9 @@ const EventInfo = ({ event }) => {
         </div>
         }
 
+      <PreviewCalendar monthData={month} dates={event.dates} />
       <DateList dates={event.dates} />
+
       </StyledEventInfo>
     )
   }
-
-export default EventInfo

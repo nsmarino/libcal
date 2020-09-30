@@ -27,7 +27,6 @@ return (
     </Head>          
     {children}
     <footer>
-        <p>yard guy 2020</p>
     </footer>
     </LayoutDiv>
   )

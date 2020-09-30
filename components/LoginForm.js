@@ -3,6 +3,8 @@ import { useRouter } from 'next/router'
 import { useForm } from "react-hook-form";
 import { login } from '../services/loginService'
 import jsCookie from 'js-cookie';
+import { useAdmin } from '../context/admin'
+
 import styled from '@emotion/styled'
 
 const StyledForm = styled.form`
@@ -42,6 +44,7 @@ import PasswordInput from './EventForm/PasswordInput'
 const LoginForm = () => {
   const router = useRouter()
   const [errorMessage, setErrorMessage] = useState('')
+  const { setAdmin} = useAdmin()
 
   const { 
     register, 
@@ -57,6 +60,7 @@ const LoginForm = () => {
     } else {
       console.log(loginData)
       jsCookie.set('token', loginData.token)
+      setAdmin(loginData.token)
       router.push('/')
     }
     }
