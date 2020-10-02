@@ -1,30 +1,27 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Reed Events
 
-## Getting Started
+Event calendar created for Reed Memorial Library in Carmel, NY. Patrons can register for events that are created with an admin login. Admins have options to set daily, weekly or monthly recurrence patterns. Patrons receive confirmation emails after registering for events.
 
-First, run the development server:
+## Map
+Index contains the calendar with dynamic routes for different events and their admin and registration pages. A lot of complex logic for creating event recurrence patterns is stored in the EventForm component and is built on momentJS. Admin token is generated using JWT and stored in cookies. Serverless functions, made possible by NextJS's Pages API, communicate with a MongoDB database to store event information.
+
+## CLI Commands
 
 ```bash
-npm run dev
-# or
+# install dependencies
+yarn install
+
+# dev server with hot reload at localhost:3000
 yarn dev
+
+# build for production
+yarn build
+
+# start production server
+yarn start
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+ Hosted on [Vercel](https://vercel.com/) at

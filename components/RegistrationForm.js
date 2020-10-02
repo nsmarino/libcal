@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useForm } from "react-hook-form";
-import { useAdmin } from '../context/admin'
 
 import styled from '@emotion/styled'
 
-import { updateEvent } from '../services/eventService'
+import { registerForEvent } from '../services/eventService'
 
 const StyledForm = styled.form`
   margin: 1rem;
@@ -42,7 +41,6 @@ import TextInput from './EventForm/TextInput'
 
 const RegistrationForm = ({ event, patron, setUpdate }) => {
   const [errorMessage, setErrorMessage] = useState('')
-  const { admin } = useAdmin()
 
   const router = useRouter()
 
@@ -75,7 +73,7 @@ const RegistrationForm = ({ event, patron, setUpdate }) => {
     :
     {...event, registered: [...event.registered, data]}
     
-    updateEvent(event.id, updatedEvent, admin)
+    registerForEvent(event.id, updatedEvent)
       .then(returnedEvent => {
         if (!returnedEvent) {
           setErrorMessage(

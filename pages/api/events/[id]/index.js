@@ -1,5 +1,5 @@
-import dbConnect from '../../../utils/dbConnect'
-import Event from '../../../models/Event'
+import dbConnect from '../../../../utils/dbConnect'
+import Event from '../../../../models/Event'
 const jwt = require('jsonwebtoken')
 
 export default async function handler(req, res) {
@@ -23,7 +23,6 @@ export default async function handler(req, res) {
       }
       break
 
-      // NEEDS TOKEN
     case 'PUT' /* Edit a model by its ID */:
       try {
         const token = req.cookies.token

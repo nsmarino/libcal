@@ -72,3 +72,19 @@ export const updateEvent = async (id, data, token) => {
     return eventData
 }
 
+export const registerForEvent = async (id, data) => {
+  const res = await fetch(
+    `http://localhost:3000/api/events/${id}/register`, 
+    { 
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'}, 
+      body: JSON.stringify(data) 
+    }
+  )
+  const resToJson = await res.json()
+  const eventData = resToJson.data
+  return eventData
+}
+
+
+
