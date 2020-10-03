@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { getEventsByMonth } from '../services/eventService'
 
-import LeftArrow from '../assets/arrow-left.svg'
-import RightArrow from '../assets/arrow-right.svg'
 import SideBar from './SideBar'
 import styled from '@emotion/styled'
 
@@ -140,9 +138,9 @@ const Header = ({ month, setMonth, setEvents }) => {
       <StyledLogoDiv onClick={backToCurrentMonth}>Back to Today</StyledLogoDiv>
 
       <StyledTitleDiv>
-        <LeftArrow onClick={getPreviousMonth} />
+        <button onClick={getPreviousMonth}>prev</button>
         <h1>{`${month.name} ${month.year}`}</h1>
-        <RightArrow onClick={getNextMonth} />
+        <button onClick={getNextMonth}>next</button>
       </StyledTitleDiv>
 
       <StyledMenuNav onClick={() => setSideBarVis(!sideBarVis)}>
