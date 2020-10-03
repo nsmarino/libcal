@@ -10,7 +10,7 @@ export const getAllEvents = async () => {
 export const getEventsByMonth = async (currentMonth) => {
 
   const res = await axios.post(
-    `/api/events/byMonth`,
+    `/events/byMonth`,
     currentMonth,
     {
       headers: {
