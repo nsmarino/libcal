@@ -1,5 +1,5 @@
-// CRUD routes for events
-
+import axios from "axios"
+const host = process.env.HOST
 // GET //
 export const getAllEvents = async () => {
     const res = await fetch(`http://localhost:3000/api/events`, { method: 'GET', })
@@ -9,17 +9,17 @@ export const getAllEvents = async () => {
 }
 
 export const getEventsByMonth = async (currentMonth) => {
-  const res = await fetch(
-    `http://localhost:3000/api/events/byMonth`,
+
+  const res = await axios.post(
+    `${host}/api/events/byMonth`,
+    currentMonth,
     {
-      method: 'POST', 
-      headers: {'Content-Type': 'application/json'}, 
-      body: JSON.stringify(currentMonth),
+      headers: {
+        'Content-Type': 'application/json'
+      }
     }
   )
-  const resToJson = await res.json()
-  const eventData = resToJson.data
-  return eventData
+  return res.data.data
 }
 
 export const getEvent = async (id) => {
