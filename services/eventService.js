@@ -1,5 +1,4 @@
 import axios from "axios"
-const host = process.env.HOST
 // GET //
 export const getAllEvents = async () => {
     const res = await fetch(`http://localhost:3000/api/events`, { method: 'GET', })
@@ -11,7 +10,7 @@ export const getAllEvents = async () => {
 export const getEventsByMonth = async (currentMonth) => {
 
   const res = await axios.post(
-    `${host}/api/events/byMonth`,
+    `/api/events/byMonth`,
     currentMonth,
     {
       headers: {
