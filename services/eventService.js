@@ -1,5 +1,8 @@
 import axios from "axios"
+import { api } from '../utils/config'
 // GET //
+
+
 export const getAllEvents = async () => {
     const res = await fetch(`http://localhost:3000/api/events`, { method: 'GET', })
     const resToJson = await res.json()
@@ -8,9 +11,8 @@ export const getAllEvents = async () => {
 }
 
 export const getEventsByMonth = async (currentMonth) => {
-
   const res = await axios.post(
-    `https://reedevents.vercel.app/api/events/byMonth`,
+    `${api}/events/byMonth`,
     currentMonth,
     {
       headers: {
