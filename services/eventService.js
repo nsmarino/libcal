@@ -10,7 +10,7 @@ export const getAllEvents = async () => {
 export const getEventsByMonth = async (currentMonth) => {
 
   const res = await axios.post(
-    `${process.env.HOST}/events/byMonth`,
+    `https://reedevents.vercel.app/api/events/byMonth`,
     currentMonth,
     {
       headers: {
