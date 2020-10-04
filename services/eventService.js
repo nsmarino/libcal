@@ -1,15 +1,11 @@
 import axios from "axios"
 import { api } from '../utils/config'
-// GET //
 
-
+// GET requests: //
 export const getAllEvents = async () => {
-    const res = await fetch(`http://localhost:3000/api/events`, { method: 'GET', })
-    const resToJson = await res.json()
-    const eventData = resToJson.data
-    return eventData
+  const res = await axios.get(`${api}/events`)
+  return res.data.data
 }
-
 export const getEventsByMonth = async (currentMonth) => {
   const res = await axios.post(
     `${api}/events/byMonth`,
@@ -22,69 +18,62 @@ export const getEventsByMonth = async (currentMonth) => {
   )
   return res.data.data
 }
-
 export const getEvent = async (id) => {
-    const res = await fetch(`http://localhost:3000/api/events/${id}`, { method: 'GET', })
-    const resToJson = await res.json()
-    const eventData = resToJson.data
-    return eventData
+  const res = await axios.get(`${api}/events/${id}`)
+  return res.data.data
 }
-
-// DELETE //
+// DELETE requests: //
 export const deleteEvent = async (id, token) => {
-    const res = await fetch(
-      `http://localhost:3000/api/events/${id}`, 
-      { 
-        method: 'DELETE',
-        headers: {'Set-Cookie': `token=${token}`}, 
-      })
-    const resToJson = await res.json()
-    const eventData = resToJson.data
-    return eventData
-}
-
-// ADD //
-export const addEvent = async (data, token) => {
-    const res = await fetch(
-      `http://localhost:3000/api/events`, 
-        {
-          method: 'POST', 
-          headers: {'Content-Type': 'application/json', 'Set-Cookie': `token=${token}`}, 
-          body: JSON.stringify(data),
-        }
-      )
-    const resToJson = await res.json()
-    const eventData = resToJson.data
-    return eventData
-}
-
-// UPDATE //
-export const updateEvent = async (id, data, token) => {
-    const res = await fetch(
-      `http://localhost:3000/api/events/${id}`, 
-      { 
-        method: 'PUT',
-        headers: {'Content-Type': 'application/json', 'Set-Cookie': `token=${token}`}, 
-        body: JSON.stringify(data) 
+  const res = await axios.delete(
+    `${api}/events/${id}`,
+    {
+      headers: {
+        'Set-Cookie': `token=${token}`,
       }
-    )
-    const resToJson = await res.json()
-    const eventData = resToJson.data
-    return eventData
-}
-
-export const registerForEvent = async (id, data) => {
-  const res = await fetch(
-    `http://localhost:3000/api/events/${id}/register`, 
-    { 
-      method: 'PUT',
-      headers: {'Content-Type': 'application/json'}, 
-      body: JSON.stringify(data) 
     }
   )
-  const resToJson = await res.json()
-  const eventData = resToJson.data
-  return eventData
+  return res.data.data
+}
+// POST requests: //
+export const addEvent = async (data, token) => {
+  const res = await axios.post(
+    `${api}/events/`,
+    data,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Set-Cookie': `token=${token}`
+      }
+    }
+  )
+  return res.data.data
+}
+// PUT requests: //
+export const updateEvent = async (id, data, token) => {
+  const res = await axios.put(
+    `http://localhost:3000/api/events/${id}`,
+    data,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Set-Cookie': `token=${token}`
+      }
+    }
+  )
+  return res.data.data
+}
+export const registerForEvent = async (id, data) => {
+  const res = await axios.put(
+    `http://localhost:3000/api/events/${id}/register`,
+    data,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Set-Cookie': `token=${token}`
+      }
+    }
+  )
+  return res.data.data
 }
 
 

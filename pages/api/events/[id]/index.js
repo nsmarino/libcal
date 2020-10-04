@@ -45,7 +45,6 @@ export default async function handler(req, res) {
       }
       break
 
-      // NEEDS TOKEN
     case 'DELETE' /* Delete a model by its ID */:
        try {
         const token = req.cookies.token
