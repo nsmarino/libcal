@@ -14,6 +14,6 @@ export const login = async (data) => {
   if (res.status===500) {
     return false
   } else if (res.status===200) {
-    return res.data.data
+    return res.data
   }
 }  

@@ -7,7 +7,7 @@ const sendEmail = async (event) => {
       from: 'contact@nmarino.dev',
       subject: 'Registration Confirmation',
       text: `You have successfully registered for ${event.formData.title}. Please call the library with any further questions. Visit event page`,
-      html: `You have successfully registered for this program. Please call the library with any further questions. <a href='./events/${event.id}'>Visit event page</a>`,
+      html: `You have successfully registered for ${event.formData.title}. Please call the library with any further questions. <a href='./events/${event.id}'>Visit event page</a>`,
     };
 
     try {

@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import styled from '@emotion/styled'
+
 import { getEventsByMonth } from '../services/eventService'
 
 import SideBar from './SideBar'
-import styled from '@emotion/styled'
+import NavButton from './NavButton'
 
 const StyledHeader = styled.header`
 position: sticky;
@@ -138,9 +140,9 @@ const Header = ({ month, setMonth, setEvents }) => {
       <StyledLogoDiv onClick={backToCurrentMonth}>Back to Today</StyledLogoDiv>
 
       <StyledTitleDiv>
-        <button onClick={getPreviousMonth}>prev</button>
+        <NavButton handleClick={getPreviousMonth} text='<' />
         <h1>{`${month.name} ${month.year}`}</h1>
-        <button onClick={getNextMonth}>next</button>
+        <NavButton handleClick={getNextMonth} text='>' />
       </StyledTitleDiv>
 
       <StyledMenuNav onClick={() => setSideBarVis(!sideBarVis)}>

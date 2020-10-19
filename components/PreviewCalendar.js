@@ -6,6 +6,7 @@ import getCurrentMonth, { getMonthObject } from '../utils/getCurrentMonth'
 import idGenerator from '../utils/idGenerator'
 import PlaceholderCard from './PlaceholderCard'
 import PreviewCard from './PreviewCard'
+import NavButton from './NavButton'
 
 const Container = styled.div`
 width: 100%;
@@ -82,9 +83,9 @@ const PreviewCalendar = ({ monthData, dates }) => {
   return (
     <Container>
     <div style={{display: 'flex', width: '21rem', justifyContent: 'space-between', alignItems: 'center'}}>
-      <StyledButton onClick={getPreviousMonth}>{'<'}</StyledButton>
+      <NavButton handleClick={getPreviousMonth} text='<' />
       <h4>{month.name} {month.year}</h4>
-      <StyledButton onClick={getNextMonth}>{'>'}</StyledButton>
+      <NavButton handleClick={getNextMonth} text='>' />
     </div>
     <CalendarDiv>
       {displayMonth()}

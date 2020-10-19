@@ -21,4 +21,4 @@ function useAdmin() {
   return context
 }
 
-export {AdminProvider, useAdmin }
+export { AdminProvider, useAdmin }

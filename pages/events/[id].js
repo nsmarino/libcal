@@ -4,7 +4,6 @@ import getCurrentMonth from '../../utils/getCurrentMonth'
 import Layout from '../../components/Layout'
 import DefaultHeader from '../../components/DefaultHeader'
 import EventInfo from '../../components/EventInfo'
-import PreviewCalendar from '../../components/PreviewCalendar'
 
 export default function EventPage({ event, monthData }) {
 

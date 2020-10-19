@@ -121,7 +121,6 @@ describe('/api/events', () => {
     })
   });
 
-
 afterAll(() => {
   mongoose.connection.close()
 })

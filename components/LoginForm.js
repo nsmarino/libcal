@@ -53,12 +53,11 @@ const LoginForm = () => {
   } = useForm()
 
   const onSubmit = async (data) => {
-    console.log('submitted', data)
     const loginData = await login(data)
+    console.log(loginData)
     if (!loginData) {
       setErrorMessage('INVALID USERNAME OR PASSWORD')
     } else {
-      console.log(loginData)
       jsCookie.set('token', loginData.token)
       setAdmin(loginData.token)
       router.push('/')
