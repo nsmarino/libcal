@@ -51,7 +51,7 @@ export const addEvent = async (data, token) => {
 // PUT requests: //
 export const updateEvent = async (id, data, token) => {
   const res = await axios.put(
-    `http://localhost:3000/api/events/${id}`,
+    `${api}/events/${id}`,
     data,
     {
       headers: {
@@ -64,7 +64,7 @@ export const updateEvent = async (id, data, token) => {
 }
 export const registerForEvent = async (id, data) => {
   const res = await axios.put(
-    `http://localhost:3000/api/events/${id}/register`,
+    `${api}/events/${id}/register`,
     data,
     {
       headers: {
