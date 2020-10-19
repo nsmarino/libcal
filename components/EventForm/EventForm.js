@@ -28,6 +28,8 @@ const StyledForm = styled.form`
   box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
   border: 1px solid grey;
   input[type="submit"] {
+    font-family: inherit;
+    font-size: 100%;
     color: white;
     background: black;
     border: 1px solid grey;
@@ -37,6 +39,11 @@ const StyledForm = styled.form`
     margin-right: 30%;
     margin-top: 1rem;
     margin-bottom: 2rem;
+    &:hover {
+      color: black;
+      background: white;
+      cursor: pointer;
+    }
   }
 
   input[type="submit"]:disabled {
@@ -74,6 +81,26 @@ const StyledInfoContainer = styled.div`
 
 const StyledCheckBoxContainer = styled.div`
   display: flex;  
+`
+
+const AdminButton = styled.button`
+font-family: inherit;
+display: inline;
+font-size: 100%;
+color: black;
+background: none;
+border: 1px solid grey;
+height: 4rem;
+width: 40%;
+margin-left: 30%;
+margin-right: 30%;
+margin-top: 1rem;
+margin-bottom: 1rem;
+&:hover {
+  color: black;
+  background: white;
+  cursor: pointer;
+}
 `
 
 const EventForm = ({event}) => {
@@ -245,28 +272,24 @@ const EventForm = ({event}) => {
               setDates={setDates}
             />       
             )}
-          
 
-        </StyledContainer>
-        <PreviewCalendar dates={dates} />
-        <DateList dates={dates} /> 
+      </StyledContainer>
+      <PreviewCalendar dates={dates} />
+      <DateList dates={dates} /> 
      
-
-
-        <input type="submit" disabled={dates.length===0} value={event ? "Update Event" : "Create Event"} />
+      <input type="submit" disabled={dates.length===0} value={event ? "Update Event" : "Create Event"} />
         { event &&
-        <>
-          <button onClick={(e) => removeEvent(e)}>DELETE EVENT</button>
+        <div>
+          <AdminButton onClick={(e) => removeEvent(e)}>Delete Event</AdminButton>
           <Link href="/events/[id]" as={`/events/${event.id}`}>
             <a>
-              <button>cancel</button>
+              <AdminButton>Cancel</AdminButton>
             </a>
           </Link>
-        </>
+        </div>
         }
-             
-      </StyledForm>
-    )
+    </StyledForm>
+  )
 }
 
 export default EventForm

@@ -44,15 +44,19 @@ export default function EventInfo({ event, month }) {
   const { admin } = useAdmin()
     return (
       <StyledEventInfo>
-        <h2>{event.formData.title}</h2>
 
-        { admin &&
-          <LinkButton 
-            href="/events/admin/[id]" 
-            dynamic={`/events/admin/${event.id}`} 
-            text="admin" 
-          /> 
-        }
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+          <h2>{event.formData.title}</h2>
+
+          { admin &&
+            <LinkButton 
+              href="/events/admin/[id]" 
+              dynamic={`/events/admin/${event.id}`} 
+              text="admin" 
+            /> 
+          }
+        </div>
+
         <p>{event.formData.startTime} to {event.formData.endTime}</p>
 
         <p>{event.formData.description}</p>

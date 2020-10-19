@@ -9,7 +9,7 @@ export default function EventPage({ event, monthData }) {
 
   return (
   <Layout>
-    <DefaultHeader title='Register' />
+    <DefaultHeader title='Events' />
     <EventInfo event={event} month={monthData} /> 
   </Layout>
   )
