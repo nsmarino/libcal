@@ -21,7 +21,4 @@ yarn build
 yarn start
 ```
 
-## Learn More
-
-
- Hosted on [Vercel](https://vercel.com/) at
+ Hosted on [Vercel](https://vercel.com/) at [reedevents.vercel.app](https://reedevents.vercel.app/)
