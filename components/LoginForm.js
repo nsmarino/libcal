@@ -54,7 +54,7 @@ const LoginForm = () => {
 
   const onSubmit = async (data) => {
     const loginData = await login(data)
-    console.log(loginData)
+
     if (!loginData) {
       setErrorMessage('INVALID USERNAME OR PASSWORD')
     } else {

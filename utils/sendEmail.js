@@ -3,7 +3,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const sendEmail = async (event) => {
     const msg = {
-      to: email,
+      to: event.formData.email,
       from: 'contact@nmarino.dev',
       subject: 'Registration Confirmation',
       text: `You have successfully registered for ${event.formData.title}. Please call the library with any further questions. Visit event page`,

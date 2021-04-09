@@ -27,6 +27,7 @@ export default function Home({ monthData, eventData }) {
       </Layout>
   )
 }
+
 // This gets called on every request
 export async function getServerSideProps() {
   const monthData = getCurrentMonth()

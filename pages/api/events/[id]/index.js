@@ -50,7 +50,6 @@ export default async function handler(req, res) {
         const token = req.cookies.token
         const decodedToken = jwt.verify(token, process.env.SECRET)
         if (!token || !decodedToken.id) { 
-          console.log('returning error')   
           return response.status(401).json({ error: 'token missing or invalid' })  
         }
         
@@ -60,7 +59,6 @@ export default async function handler(req, res) {
         }
         res.status(200).json({ success: true, data: {} })
       } catch (error) {
-        console.log('catching error!')
         res.status(400).json({ success: false })
       }
       break

@@ -1,11 +1,10 @@
-/* This is a database connection function*/
 import mongoose from 'mongoose'
 import { MONGODB_URI } from '../utils/config'
 
 const connection = {} /* creating connection object*/
 
 async function dbConnect() {
-  /* check if we have connection to our databse*/
+  /* check if we have connection to our database*/
   if (connection.isConnected) {
     return
   }
@@ -16,7 +15,6 @@ async function dbConnect() {
     useFindAndModify: false,
   })
   
-  // console.log('db',db.connections[0].readyState)
   connection.isConnected = db.connections[0].readyState
 }
 

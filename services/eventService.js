@@ -69,7 +69,6 @@ export const registerForEvent = async (id, data) => {
     {
       headers: {
         'Content-Type': 'application/json',
-        'Set-Cookie': `token=${token}`
       }
     }
   )

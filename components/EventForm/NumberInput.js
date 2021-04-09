@@ -48,7 +48,6 @@ const NumberInput = ({name, label, register, errors, getValues, setValue}) => {
     e.preventDefault()
     const value = parseInt(getValues(`${name}`),10)
     setValue(`${name}`, value < 25 ? value + 1 : 25)
-
   }
 
   

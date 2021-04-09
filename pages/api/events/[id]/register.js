@@ -12,7 +12,6 @@ export default async function handler(req, res) {
   switch (method) {
     case 'PUT' /* Edit a model by its ID */:
       try {
-        console.log(req.body)
         const event = await Event.findByIdAndUpdate(id, req.body, {
           new: true,
           runValidators: true,

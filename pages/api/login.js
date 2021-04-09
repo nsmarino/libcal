@@ -11,7 +11,6 @@ export default async function loginHandler(req, res) {
     case 'POST':
       try {
         const body = req.body
-//       console.log('running post request to login endpoint', body)
 
         const admin = await Admin.findOne({ username: body.username })
         const passwordCorrect = admin === null
@@ -30,7 +29,6 @@ export default async function loginHandler(req, res) {
         }
       
         const token = jwt.sign(adminForToken, process.env.SECRET)
-//        console.log(token, admin)
         res
           .status(200)
           .send({ token, username: admin.username })
