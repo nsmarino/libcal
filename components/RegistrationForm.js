@@ -60,6 +60,7 @@ const RegistrationForm = ({ event, patron, setUpdate }) => {
   }, [])
 
   const onSubmit = (data) => {
+    const email = data.email
     const updatedEvent = patron ?
     {
         ...event, 
@@ -73,7 +74,7 @@ const RegistrationForm = ({ event, patron, setUpdate }) => {
     :
     {...event, registered: [...event.registered, data]}
     
-    registerForEvent(event.id, updatedEvent)
+    registerForEvent(event.id, {event: updatedEvent,email})
       .then(returnedEvent => {
         if (!returnedEvent) {
           setErrorMessage(
