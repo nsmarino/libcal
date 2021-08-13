@@ -20,7 +20,7 @@
     "moment": "^2.27.0",
     "mongoose": "^5.9.20",
     "mongoose-unique-validator": "^2.0.3",
-    "next": "9.4.4",
+    "next": "11.1.0",
     "node-fetch": "^2.6.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
