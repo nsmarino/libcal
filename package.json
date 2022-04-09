@@ -17,7 +17,7 @@
     "dotenv": "^8.2.0",
     "js-cookie": "^2.2.1",
     "jsonwebtoken": "^8.5.1",
-    "moment": "^2.27.0",
+    "moment": "^2.29.2",
     "mongoose": "^5.9.20",
     "mongoose-unique-validator": "^2.0.3",
     "next": "9.4.4",
